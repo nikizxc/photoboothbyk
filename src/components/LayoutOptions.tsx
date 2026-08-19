@@ -26,7 +26,7 @@ const LayoutOptions = ({
       <CarouselContent className="w-2xl">
         {LAYOUT_OPTIONS.map((layout, index) => (
           <CarouselItem
-            className="basis-1/3 "
+            className="basis-1/3 h-full"
             key={index}
             onClick={() => {
               setLayoutId(() => layout.frame);
