@@ -1,5 +1,3 @@
-import FourLayout from "../assets/four-layout.png";
-import SixLayout from "../assets/six-layout.png";
 import { Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,15 +12,15 @@ const HomePage = () => {
         <div className="flex flex-1 items-center justify-center ">
           <div className="relative h-80 w-80">
             <img
-              src={FourLayout}
+              src="layouts/vintage.png"
               alt="Four-layout"
-              className="absolute top-1/2 left-10 w-30 -translate-y-1/2 rotate-[-8deg] border border-black shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
+              className="absolute top-1/2 left-10 w-30 -translate-y-1/2 rotate-[-8deg]  shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
             />
 
             <img
-              src={SixLayout}
+              src="layouts/layout-c.png"
               alt="Six-layout"
-              className="absolute top-1/2 left-30 w-50 -translate-y-1/2 rotate-[6deg] border border-black shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
+              className="absolute top-1/2 left-30 w-50 -translate-y-1/2 rotate-[6deg] shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
             />
           </div>
         </div>
@@ -39,8 +37,12 @@ const HomePage = () => {
               printed memories.
             </p>
 
-            <Button className="mt-5 " onClick={() => navigate("/studio")}>
-              <Camera className="size-5" />
+            <Button
+              variant="default"
+              className="mt-5 font-bold"
+              onClick={() => navigate("/studio")}
+            >
+              <Camera className="size-5" strokeWidth={3} />
               START
             </Button>
           </div>

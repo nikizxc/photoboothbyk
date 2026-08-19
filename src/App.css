@@ -52,6 +52,10 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-secondary-background-foreground: var(
+    --secondary-background-foreground
+  );
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -63,16 +67,18 @@ body {
 
 :root {
   --background: #722f37;
+  --secondary-background: #f8f4e3;
+  --secondary-background-foreground: #722f37;
   --foreground: #f8f4e3;
   --drop-shadow-button: 0 4px 6px rgb(0 0 0 / 0.2);
   --card: #f8f4e3;
   --card-foreground: #722f37;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #f8f4e3;
-  --primary-foreground: #722f37;
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: #d9a441;
+  --primary-foreground: #f8f4e3;
+  --secondary: #8f555b;
+  --secondary-foreground: #f8f4e3;
   --muted: oklch(0.97 0 0);
   --muted-foreground: #b8b2a6;
   --accent: oklch(0.97 0 0);

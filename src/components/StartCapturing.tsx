@@ -1,79 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { Camera } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Camera, CircleCheck } from "lucide-react";
+
 import html2canvas from "html2canvas";
-
-const items = [
-  {
-    label: "3s",
-    value: 3,
-  },
-
-  {
-    label: "5s",
-    value: 5,
-  },
-  {
-    label: "10s",
-    value: 10,
-  },
-];
+import TimerSelect from "./TimerSelect";
+import Webcam from "react-webcam";
 
 const StartCapturing = ({ layoutId, totalShots }: any) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cameraRef = useRef<Webcam>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const canvasFrameRef = useRef<HTMLCanvasElement>(null);
-  const [isStreaming, setIsStreaming] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(true);
   const [shots, setShots] = useState<string[]>([]);
   const [timer, setTimer] = useState<number>(3);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const Component = layoutId;
-
-  const startCamera = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          facingMode: "user",
-        },
-        audio: false,
-      })
-      .then((stream) => {
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        setIsStreaming(true);
-      })
-      .catch((error) => {
-        console.error("Camera error", error);
-        setIsStreaming(false);
-      });
-  };
-
-  useEffect(() => {
-    startCamera();
-
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => {
-          track.stop();
-        });
-        streamRef.current = null;
-      }
-    };
-  }, []);
 
   const startTimer = (): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -97,19 +40,12 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
   };
 
   const onCapture = async () => {
+    if (!cameraRef.current) return;
     for (let i = 0; i < totalShots; i++) {
       await startTimer();
 
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-
-      if (!canvas || !video) return;
-
-      const ctx = canvas.getContext("2d");
-
-      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const image = canvas.toDataURL("image/png");
+      const image = cameraRef.current.getScreenshot();
+      if (!image) return;
 
       setShots((prev) => [...prev, image]);
     }
@@ -141,89 +77,62 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center w-full gap-6">
+      <div className="flex flex-col justify-center items-center w-full gap-6 ">
         <p className="text-muted-foreground">
           you may now begin capturing photos or upload images from your device
         </p>
-        <div className="flex gap-6">
-          <div className="flex flex-col gap-3">
-            <div
-              className={`w-125 h-125 rounded-md bg-primary p-1.5 relative `}
-            >
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                className={`w-full h-full object-cover ${isStreaming ? "opacity-100" : "opacity-0"} transition-opacity duration-1000`}
+        <div className="flex gap-6 h-125">
+          <div className="flex flex-col gap-3 h-full ">
+            <div className="rounded-md p-3 w-150 flex-1 min-h-0 bg-secondary-background relative">
+              <Webcam
+                audio={false}
+                ref={cameraRef}
+                screenshotFormat="image/jpeg"
+                className="w-full h-full object-cover"
+                onUserMediaError={() => {
+                  console.error("Camera not found");
+                  setIsStreaming(false);
+                }}
               />
+
               {!isStreaming && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-primary-foreground">
-                    Waiting for camera...
-                  </p>
-                </div>
+                <p className="flex items-center justify-center absolute inset-0 text-secondary-background-foreground font-semibold">
+                  Waiting for camera...
+                </p>
               )}
 
               {isTimerRunning && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-white text-8xl">{timer}</p>
-                </div>
+                <p className="absolute inset-0 flex items-center justify-center text-white text-8xl">
+                  {timer}
+                </p>
               )}
             </div>
-
-            <canvas
-              ref={canvasRef}
-              className="hidden"
-              width={500}
-              height={500}
-            />
 
             <div className="flex gap-3 h-12">
               {shots.length !== totalShots ? (
                 <>
                   <Button
                     onClick={onCapture}
-                    variant="secondary"
+                    variant="default"
                     className="h-full"
                   >
-                    <Camera className="size-7" />
+                    <Camera strokeWidth={3} />
+                    Start
                   </Button>
-                  <Select
-                    items={items}
-                    defaultValue={3}
-                    onValueChange={(value) => {
-                      if (value != null) setTimer(Number(value));
-                    }}
-                  >
-                    <SelectTrigger className="text-lg h-full!">
-                      <SelectValue />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      <SelectGroup>
-                        {items.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                  <TimerSelect setTimer={setTimer} />
                 </>
               ) : (
                 <>
                   <Button
                     onClick={onRetake}
                     variant="secondary"
-                    className="h-full"
+                    className="h-full "
                   >
+                    <Camera strokeWidth={3} />
                     Retake
                   </Button>
-                  <Button
-                    onClick={onDone}
-                    variant="secondary"
-                    className="h-full"
-                  >
+                  <Button onClick={onDone} variant="default" className="h-full">
+                    <CircleCheck strokeWidth={3} />
                     Done
                   </Button>
                 </>
@@ -232,16 +141,16 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
           </div>
           <Card className="h-125 w-60">
             <CardContent className="flex h-full flex-col gap-3">
-              <p className="shrink-0 text-center font-bold">
+              <p className="shrink-0 text-center font-semibold">
                 shots {shots.length}/{totalShots}
               </p>
 
               <div className="flex min-h-0 flex-1 flex-col items-center gap-3 overflow-y-auto">
                 {shots.map((shot, index) => (
-                  <div key={index} className="shrink-0">
+                  <div key={index}>
                     <img
                       src={shot}
-                      className="h-40 w-40 object-cover"
+                      className="w-40"
                       alt={`Shot ${index + 1}`}
                     />
                   </div>
@@ -252,7 +161,7 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
         </div>
       </div>
       <canvas ref={canvasFrameRef} className="hidden" />
-      <div ref={frameRef} className="absolute top-[-9999px] left-[-9999px] ">
+      <div ref={frameRef} className="absolute top-[-9999px] left-[-9999px]">
         <Component shots={shots} />
       </div>
     </>
