@@ -1,11 +1,16 @@
 import { useRef, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { Camera, CircleCheck } from "lucide-react";
+import { Camera, CircleCheck, Cog } from "lucide-react";
 
 import html2canvas from "html2canvas";
 import TimerSelect from "./TimerSelect";
 import Webcam from "react-webcam";
+import { FILTER_OPTIONS } from "@/constants/filter-options.constant";
+import Settings from "./Settings";
+import { Timer } from "@/services/timer.service";
+import { Image } from "@/services/image.service";
+import FilterOptions from "./FilterOptions";
 
 const StartCapturing = ({ layoutId, totalShots }: any) => {
   const cameraRef = useRef<Webcam>(null);
@@ -14,39 +19,28 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
   const [isStreaming, setIsStreaming] = useState(true);
   const [shots, setShots] = useState<string[]>([]);
   const [timer, setTimer] = useState<number>(3);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const Component = layoutId;
 
-  const startTimer = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      if (timerRef.current) reject();
-      let currentTimer = timer;
-      let count = timer;
-      setIsTimerRunning(true);
-      timerRef.current = setInterval(() => {
-        count--;
-        setTimer(count);
+  const [settings, setSettings] = useState({ flash: false, mirror: false });
+  const [filter, setFilter] = useState("");
 
-        if (count === 0) {
-          clearInterval(timerRef.current!);
-          timerRef.current = null;
-          setTimer(currentTimer);
-          setIsTimerRunning(false);
-          resolve();
-        }
-      }, 1000);
-    });
+  const startTimer = async (selectedTimer: number) => {
+    setIsTimerRunning(true);
+    await Timer.start(timer, (count) => setTimer(count));
+    setIsTimerRunning(false);
+    setTimer(selectedTimer);
   };
 
   const onCapture = async () => {
-    if (!cameraRef.current) return;
+    if (!cameraRef.current || !cameraRef.current.video) return;
     for (let i = 0; i < totalShots; i++) {
-      await startTimer();
+      await startTimer(timer);
 
-      const image = cameraRef.current.getScreenshot();
+      const video = cameraRef.current.video;
+
+      const image = Image.capture(video, settings.mirror, filter);
       if (!image) return;
-
       setShots((prev) => [...prev, image]);
     }
   };
@@ -85,6 +79,7 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
           <div className="flex flex-col gap-3 h-full ">
             <div className="rounded-md p-3 w-150 flex-1 min-h-0 bg-secondary-background relative">
               <Webcam
+                mirrored={settings.mirror}
                 audio={false}
                 ref={cameraRef}
                 screenshotFormat="image/jpeg"
@@ -92,6 +87,9 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
                 onUserMediaError={() => {
                   console.error("Camera not found");
                   setIsStreaming(false);
+                }}
+                style={{
+                  filter: "",
                 }}
               />
 
@@ -111,6 +109,8 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
             <div className="flex gap-3 h-12">
               {shots.length !== totalShots ? (
                 <>
+                  <Settings settings={settings} setSettings={setSettings} />
+
                   <Button
                     onClick={onCapture}
                     variant="default"
