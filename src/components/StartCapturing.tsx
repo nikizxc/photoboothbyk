@@ -1,16 +1,15 @@
 import { useRef, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { Camera, CircleCheck, Cog } from "lucide-react";
+import { Camera } from "lucide-react";
 
 import html2canvas from "html2canvas";
 import TimerSelect from "./TimerSelect";
 import Webcam from "react-webcam";
-import { FILTER_OPTIONS } from "@/constants/filter-options.constant";
 import Settings from "./Settings";
 import { Timer } from "@/services/timer.service";
 import { Image } from "@/services/image.service";
-import FilterOptions from "./FilterOptions";
+import CustomizeFrameDialog from "./CustomizeFrameDialog";
 
 const StartCapturing = ({ layoutId, totalShots }: any) => {
   const cameraRef = useRef<Webcam>(null);
@@ -106,38 +105,35 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
               )}
             </div>
 
-            <div className="flex gap-3 h-12">
-              {shots.length !== totalShots ? (
-                <>
+            {shots.length !== totalShots ? (
+              <div className="flex justify-between h-12">
+                <div className="flex gap-2">
                   <Settings settings={settings} setSettings={setSettings} />
 
-                  <Button
-                    onClick={onCapture}
-                    variant="default"
-                    className="h-full"
-                  >
-                    <Camera strokeWidth={3} />
-                    Start
-                  </Button>
                   <TimerSelect setTimer={setTimer} />
-                </>
-              ) : (
-                <>
-                  <Button
-                    onClick={onRetake}
-                    variant="secondary"
-                    className="h-full "
-                  >
-                    <Camera strokeWidth={3} />
-                    Retake
-                  </Button>
-                  <Button onClick={onDone} variant="default" className="h-full">
-                    <CircleCheck strokeWidth={3} />
-                    Done
-                  </Button>
-                </>
-              )}
-            </div>
+                </div>
+                <Button
+                  onClick={onCapture}
+                  variant="default"
+                  className="h-full"
+                >
+                  <Camera strokeWidth={3} />
+                  Start
+                </Button>
+              </div>
+            ) : (
+              <div className="flex justify-end gap-2 h-12">
+                <Button
+                  onClick={onRetake}
+                  variant="secondary"
+                  className="h-full "
+                >
+                  <Camera strokeWidth={3} />
+                  Retake
+                </Button>
+                <CustomizeFrameDialog layoutId={layoutId} shots={shots} />
+              </div>
+            )}
           </div>
           <Card className="h-125 w-60">
             <CardContent className="flex h-full flex-col gap-3">
@@ -146,13 +142,18 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
               </p>
 
               <div className="flex min-h-0 flex-1 flex-col items-center gap-3 overflow-y-auto">
-                {shots.map((shot, index) => (
-                  <div key={index}>
-                    <img
-                      src={shot}
-                      className="w-40"
-                      alt={`Shot ${index + 1}`}
-                    />
+                {Array.from({ length: totalShots }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-40 border-dashed border min-h-30"
+                  >
+                    {shots[index] && (
+                      <img
+                        src={shots[index]}
+                        className="w-full h-full object-cover"
+                        alt={`Shot ${index + 1}`}
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -161,7 +162,7 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
         </div>
       </div>
       <canvas ref={canvasFrameRef} className="hidden" />
-      <div ref={frameRef} className="absolute top-[-9999px] left-[-9999px]">
+      <div ref={frameRef} className="absolute top-[-99999px] left-[-99999px]">
         <Component shots={shots} />
       </div>
     </>

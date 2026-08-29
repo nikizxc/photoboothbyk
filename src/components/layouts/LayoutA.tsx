@@ -1,11 +1,25 @@
-export const LayoutA = ({ shots }: { shots: string[] }) => {
+import type { LayoutProps } from "@/types/layout.type";
+
+export const LayoutA = ({
+  shots,
+  selectedBg,
+  selectedColor,
+  label,
+}: LayoutProps) => {
   return (
     <div
-      className="grid grid-rows-4 gap-1 w-full flex-1 min-h-0 bg-black "
+      className="grid gap-1 w-full flex-1 min-h-0 bg-cover bg-center"
       style={{
         width: "2in",
         height: "6in",
         padding: "5px",
+        gridTemplateRows: "1fr 1fr 1fr 0.5fr",
+        ...(selectedBg && {
+          backgroundImage: `url("/backgrounds/${selectedBg}")`,
+        }),
+        ...(selectedColor && {
+          backgroundColor: selectedColor,
+        }),
       }}
     >
       {shots.map((image: string, i: number) => (
@@ -14,9 +28,15 @@ export const LayoutA = ({ shots }: { shots: string[] }) => {
         </div>
       ))}
 
-      <p className="text-center font-bold text-white text-[10px] tracking-wide shrink-0 pt-1">
-        photoboothbyk
-      </p>
+      <div className=" flex justify-center items-center">
+        {label?.isChecked && (
+          <p
+            className={`text-center font-bold text-[${label.color}] text-[10px] tracking-wide shrink-0 pt-1`}
+          >
+            photoboothbyk
+          </p>
+        )}
+      </div>
     </div>
   );
 };

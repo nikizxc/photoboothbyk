@@ -1,4 +1,6 @@
-export const LayoutB = ({ shots }: { shots: string[] }) => {
+import type { LayoutProps } from "@/types/layout.type";
+
+export const LayoutB = ({ shots, selectedBg, selectedColor }: LayoutProps) => {
   return (
     <div
       className="grid grid-rows-4 gap-1 w-full flex-1 min-h-0 bg-black "
@@ -6,6 +8,12 @@ export const LayoutB = ({ shots }: { shots: string[] }) => {
         width: "2in",
         height: "6in",
         padding: "5px",
+        ...(selectedBg && {
+          backgroundImage: `url("/backgrounds/${selectedBg}")`,
+        }),
+        ...(selectedColor && {
+          backgroundColor: selectedColor,
+        }),
       }}
     >
       {shots.map((image: string, i: number) => (

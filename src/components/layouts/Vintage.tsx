@@ -1,7 +1,7 @@
 export const Vintage = ({ shots }: { shots: string[] }) => {
   return (
     <div
-      className="grid gap-1 w-full flex-1 min-h-0 bg-black"
+      className="grid gap-1 w-full min-h-0 bg-black"
       style={{
         width: "2in",
         height: "6in",
@@ -15,9 +15,9 @@ export const Vintage = ({ shots }: { shots: string[] }) => {
         </div>
       ))}
 
-      <p className="font-bold text-center text-white text-[10px]  m-0">
-        photoboothbyk
-      </p>
+      <div className="flex justify-center items-center border">
+        <p className="font-bold text-white text-[10px] ">photoboothbyk</p>
+      </div>
 
       {shots.slice(2).map((image, i) => (
         <div key={i + 2} className="w-full h-full overflow-hidden">
