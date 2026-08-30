@@ -23,7 +23,7 @@ const LayoutOptions = ({
 }) => {
   return (
     <Carousel className=" h-1/2">
-      <CarouselContent className="w-2xl">
+      <CarouselContent className="w-3xl  px-5">
         {LAYOUT_OPTIONS.map((layout, index) => (
           <CarouselItem
             className="basis-1/3 h-full"

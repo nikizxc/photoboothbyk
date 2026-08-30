@@ -5,18 +5,13 @@ import { CogIcon } from "lucide-react";
 
 const Settings = ({
   settings,
-  setSettings,
+  onSettingsChange,
 }: {
   settings: {
     flash: boolean;
     mirror: boolean;
   };
-  setSettings: React.Dispatch<
-    React.SetStateAction<{
-      flash: boolean;
-      mirror: boolean;
-    }>
-  >;
+  onSettingsChange: (prop: string, value: boolean) => void;
 }) => {
   return (
     <Popover>
@@ -31,10 +26,7 @@ const Settings = ({
               name="flash"
               checked={settings.flash}
               onCheckedChange={(checked) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  flash: checked === true,
-                }));
+                onSettingsChange("flash", checked === true);
               }}
             />
             <FieldLabel htmlFor="flash" className="font-normal">
@@ -48,10 +40,7 @@ const Settings = ({
               name="mirror"
               checked={settings.mirror}
               onCheckedChange={(checked) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  mirror: checked === true,
-                }));
+                onSettingsChange("mirror", checked === true);
               }}
             />
             <FieldLabel htmlFor="mirror" className="font-normal">

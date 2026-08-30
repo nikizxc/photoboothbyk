@@ -1,12 +1,23 @@
 import type { LayoutProps } from "@/types/layout.type";
+import { Fragment } from "react/jsx-runtime";
+import StickerItem from "../customize-frame/StickerItem";
 
-export const LayoutC = ({ shots, selectedBg, selectedColor }: LayoutProps) => {
+export const LayoutC = ({
+  frameRef,
+  shots,
+  selectedBg,
+  selectedColor,
+  label,
+  stickers,
+}: LayoutProps) => {
   return (
     <div
-      className="flex flex-col bg-cover bg-center box-border p-1 "
+      ref={frameRef}
+      className="flex flex-col bg-cover bg-center box-border relative "
       style={{
         width: "4in",
         height: "6in",
+        padding: "4px",
         ...(selectedBg && {
           backgroundImage: `url("/backgrounds/${selectedBg}")`,
         }),
@@ -28,11 +39,29 @@ export const LayoutC = ({ shots, selectedBg, selectedColor }: LayoutProps) => {
         ))}
       </div>
 
-      <div className="w-full shrink-0 py-1">
-        <p className="text-center font-bold text-white text-[10px]">
-          photoboothbyk
-        </p>
+      <div
+        style={{
+          padding: "4px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {label?.isChecked && (
+          <p
+            className="font-bold text-[10px] tracking-wide"
+            style={{ color: label.color }}
+          >
+            photoboothbyk
+          </p>
+        )}
       </div>
+
+      {stickers?.map((sticker, index) => (
+        <Fragment key={index}>
+          <StickerItem sticker={sticker} />
+        </Fragment>
+      ))}
     </div>
   );
 };

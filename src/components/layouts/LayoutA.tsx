@@ -1,14 +1,19 @@
 import type { LayoutProps } from "@/types/layout.type";
+import { Fragment, useRef, useState } from "react";
 
+import StickerItem from "../customize-frame/StickerItem";
 export const LayoutA = ({
+  frameRef,
   shots,
   selectedBg,
   selectedColor,
   label,
+  stickers,
 }: LayoutProps) => {
   return (
     <div
-      className="grid gap-1 w-full flex-1 min-h-0 bg-cover bg-center"
+      ref={frameRef}
+      className="grid gap-1 bg-cover bg-center relative"
       style={{
         width: "2in",
         height: "6in",
@@ -31,12 +36,18 @@ export const LayoutA = ({
       <div className=" flex justify-center items-center">
         {label?.isChecked && (
           <p
-            className={`text-center font-bold text-[${label.color}] text-[10px] tracking-wide shrink-0 pt-1`}
+            className="text-center font-bold text-[10px] tracking-wide shrink-0 pt-1"
+            style={{ color: label.color }}
           >
             photoboothbyk
           </p>
         )}
       </div>
+      {stickers?.map((sticker, index) => (
+        <Fragment key={index}>
+          <StickerItem sticker={sticker} />
+        </Fragment>
+      ))}
     </div>
   );
 };

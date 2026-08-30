@@ -16,6 +16,7 @@ body {
 }
 
 @theme inline {
+  --animate-flash: flash 2000ms ease-out forwards;
   --font-heading: var(--font-sans);
   --font-sans: "Inter Variable", sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
@@ -149,32 +150,16 @@ body {
   }
 }
 
-/* The .image-container class needs to be applied to a div wrapped around the image you want to apply this filter to */
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
 
-/* The .image-container class needs to be applied to a div wrapped around the image you want to apply this filter to */
+  20% {
+    opacity: 1;
+  }
 
-/* The .image-container class needs to be applied to a div wrapped around the image you want to apply this filter to */
-.image-container {
-  display: inline-block;
-  position: relative;
-  line-height: 0;
-  background: #ffffff;
-}
-.image-container::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  mix-blend-mode: none;
-  background: #faaa00;
-  opacity: 0.13;
-}
-.image-container > img {
-  -webkit-filter: brightness(105%) grayscale(100%) hue-rotate(0deg) invert(0%)
-    opacity(100%) saturate(100%) sepia(50%);
-  filter: brightness(105%) grayscale(100%) hue-rotate(0deg) invert(0%)
-    opacity(100%) saturate(100%) sepia(50%);
-  mix-blend-mode: none;
+  100% {
+    opacity: 0;
+  }
 }

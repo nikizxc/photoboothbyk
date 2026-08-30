@@ -19,7 +19,9 @@ export const Image = {
     } else {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
+
     const image = canvas.toDataURL("image/jpeg", 0.92);
+    console.log("Image captured");
 
     return image;
   },
