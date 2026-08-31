@@ -8,6 +8,10 @@ import StickerSection from "./StickerSection";
 import type { StickerProp } from "@/types/sticker.type";
 import html2canvas from "html2canvas";
 
+type LabelProps =
+  | { prop: "isChecked"; value: boolean }
+  | { prop: "color"; value: string };
+
 const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
   const [selectedColor, setSelectedColor] = useState<string | undefined>(
     "#000000",
@@ -32,10 +36,10 @@ const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
     }
   };
 
-  const onLabelChange = (prop: string, value: string) => {
+  const onLabelChange = ({ prop, value }: LabelProps) => {
     setLabel((prev) => ({
       ...prev,
-      [prop]: JSON.parse(value),
+      [prop]: value,
     }));
   };
 
@@ -46,8 +50,6 @@ const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
     }
     const newSticker: StickerProp = {
       src,
-      x: 0,
-      y: 0,
       size: 50,
       rotation: 0,
     };

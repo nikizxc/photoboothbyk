@@ -13,6 +13,13 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
   const onResetShot = () => {
     setShots([]);
   };
+
+  const onRemoveShot = (index: number) => {
+    const isConfirmed = confirm("Are you sure you want to remove this shot?");
+    if (!isConfirmed) return;
+    setShots((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center items-center w-full gap-6">
@@ -27,7 +34,12 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
             onAddShot={onAddShot}
             onResetShot={onResetShot}
           />
-          <ShotsSection shots={shots} totalShots={totalShots} />
+          <ShotsSection
+            shots={shots}
+            totalShots={totalShots}
+            onAddShot={onAddShot}
+            onRemoveShot={onRemoveShot}
+          />
         </div>
       </div>
     </>

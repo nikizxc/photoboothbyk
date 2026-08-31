@@ -45,14 +45,14 @@ const CameraSection = ({
 
   const onCapture = async () => {
     if (!cameraRef.current || !cameraRef.current.video) return;
-    for (let i = 0; i < totalShots; i++) {
+    for (let i = shots.length; i < totalShots; i++) {
       await startTimer(timer);
 
       const video = cameraRef.current.video;
 
       await triggerFlash();
 
-      const image = Image.capture(video, settings.mirror, filter);
+      const image = await Image.capture(video, settings.mirror, filter);
 
       if (!image) return;
       onAddShot(image);
@@ -107,7 +107,7 @@ const CameraSection = ({
 
         {isTimerRunning && (
           <div className="absolute inset-0 flex items-center justify-center ">
-            <p className="w-30 h-30 flex items-center justify-center text-6xl text-white bg-background/15 rounded-full">
+            <p className="w-30 h-30 flex items-center justify-center text-6xl text-white bg-background/20 rounded-full">
               {timer}
             </p>
           </div>

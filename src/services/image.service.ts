@@ -1,5 +1,5 @@
 export const Image = {
-  capture(
+  async capture(
     video: HTMLVideoElement,
     isMirrored: boolean,
     selectedFilter: string,
@@ -20,8 +20,13 @@ export const Image = {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
 
-    const image = canvas.toDataURL("image/jpeg", 0.92);
-    console.log("Image captured");
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg");
+    });
+
+    if (!blob) return;
+
+    const image = URL.createObjectURL(blob);
 
     return image;
   },

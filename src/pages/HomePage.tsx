@@ -33,8 +33,8 @@ const HomePage = () => {
             </p>
 
             <p className="text-muted-foreground text-xl">
-              step into our vintage-themed photobooth—where reflections become
-              printed memories.
+              step into our online photobooth—create, customize, and turn every
+              snapshot into a memory worth keeping.
             </p>
 
             <Button

@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const navigationItems = [
   { label: "home", path: "/" },
-  { label: "how it works", path: "/how-it-works" },
+  { label: "privacy policy", path: "/privacy-policy" },
   { label: "studio", path: "/studio" },
 ];
 

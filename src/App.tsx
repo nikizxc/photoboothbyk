@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
-import HowItWorksPage from "./pages/HowItWorksPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import StudioPage from "./pages/StudioPage";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="how-it-works" element={<HowItWorksPage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="studio" element={<StudioPage />} />
         </Route>
       </Routes>

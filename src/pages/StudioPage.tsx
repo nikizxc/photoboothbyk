@@ -31,8 +31,8 @@ const StudioPage = () => {
         >
           <div className="w-100 text-center">
             <p className="text-muted-foreground text-lg">
-              select how your memories will be framed from our classic or
-              template layouts
+              select how your photos will be framed from our classic or template
+              layouts
             </p>
           </div>
           <LayoutOptions

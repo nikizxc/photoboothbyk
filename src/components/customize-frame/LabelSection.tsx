@@ -8,7 +8,9 @@ const LabelSection = ({ onLabelChange, label }: any) => {
       <ToggleGroup
         variant="outline"
         defaultValue={["true"]}
-        onValueChange={(value) => onLabelChange("isChecked", value[0])}
+        onValueChange={(value) =>
+          onLabelChange({ prop: "isChecked", value: JSON.parse(value[0]) })
+        }
       >
         <ToggleGroupItem value="true" aria-label="With label">
           With Label
@@ -37,7 +39,9 @@ const LabelSection = ({ onLabelChange, label }: any) => {
               id="label-color"
               type="color"
               value={label.color}
-              onChange={(e) => onLabelChange("color", e.target.value)}
+              onChange={(e) =>
+                onLabelChange({ prop: "color", value: e.target.value })
+              }
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
           </div>

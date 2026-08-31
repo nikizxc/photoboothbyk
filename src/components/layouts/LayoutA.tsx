@@ -1,5 +1,5 @@
 import type { LayoutProps } from "@/types/layout.type";
-import { Fragment, useRef, useState } from "react";
+import { Fragment } from "react";
 
 import StickerItem from "../customize-frame/StickerItem";
 export const LayoutA = ({
