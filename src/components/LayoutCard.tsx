@@ -2,11 +2,11 @@ import type { LAYOUT_OPTIONS } from "@/constants/layout-options.constant";
 
 const LayoutCard = ({ layout }: { layout: (typeof LAYOUT_OPTIONS)[0] }) => {
   return (
-    <div className="flex flex-col gap-2 hover:border cursor-pointer p-1 rounded-md items-center">
+    <div className="flex flex-col gap-2 py-3 rounded-md items-center">
       <img
         alt={`${layout.file}`}
         src={`layouts/${layout.file}`}
-        className="w-auto h-80"
+        className="w-auto h-75 cursor-pointer hover:scale-105 transition-transform"
       />
 
       <div className="text-center">

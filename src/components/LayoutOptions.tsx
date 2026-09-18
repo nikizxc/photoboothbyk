@@ -7,31 +7,25 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "./ui/carousel";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
 const LayoutOptions = ({
-  setLayoutId,
-  setActiveTab,
-  setTotalShots,
+  onChangeTab,
 }: {
-  setLayoutId: React.Dispatch<
-    React.SetStateAction<null | React.ComponentType<{
-      shots: string[];
-    }>>
-  >;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
-  setTotalShots: React.Dispatch<React.SetStateAction<number | null>>;
+  onChangeTab: (tab: string) => void;
 }) => {
+  const { setSelectedLayout } = usePhotobooth();
+
   return (
     <Carousel className=" h-1/2">
-      <CarouselContent className="w-2xl">
+      <CarouselContent className="w-3xl  px-5">
         {LAYOUT_OPTIONS.map((layout, index) => (
           <CarouselItem
             className="basis-1/3 h-full"
             key={index}
             onClick={() => {
-              setLayoutId(() => layout.frame);
-              setActiveTab("start-capturing");
-              setTotalShots(layout.shots);
+              setSelectedLayout(layout);
+              onChangeTab("start-capturing");
             }}
           >
             <LayoutCard layout={layout} />

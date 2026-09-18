@@ -1,11 +1,25 @@
-export const LayoutB = ({ shots }: { shots: string[] }) => {
+import type { LayoutProps } from "@/types/layout.type";
+import { Fragment } from "react/jsx-runtime";
+import StickerItem from "../customize-frame/StickerItem";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
+
+export const LayoutB = ({ frameRef }: LayoutProps) => {
+  const { customization, shots } = usePhotobooth();
+  const { selectedBg, selectedColor, label, stickers } = customization;
   return (
     <div
-      className="grid grid-rows-4 gap-1 w-full flex-1 min-h-0 bg-black "
+      ref={frameRef}
+      className="grid grid-rows-4 gap-1 relative"
       style={{
         width: "2in",
         height: "6in",
         padding: "5px",
+        ...(selectedBg && {
+          backgroundImage: `url("/backgrounds/${selectedBg}")`,
+        }),
+        ...(selectedColor && {
+          backgroundColor: selectedColor,
+        }),
       }}
     >
       {shots.map((image: string, i: number) => (
@@ -14,9 +28,20 @@ export const LayoutB = ({ shots }: { shots: string[] }) => {
         </div>
       ))}
 
-      <p className="text-center font-bold text-white text-[10px] tracking-wide shrink-0 pt-1">
-        photoboothbyk
-      </p>
+      {label?.isChecked && (
+        <p
+          className="text-center font-bold text-[10px] tracking-wide shrink-0 pt-1"
+          style={{ color: label.color }}
+        >
+          photoboothbyk
+        </p>
+      )}
+
+      {stickers?.map((sticker, index) => (
+        <Fragment key={index}>
+          <StickerItem sticker={sticker} />
+        </Fragment>
+      ))}
     </div>
   );
 };

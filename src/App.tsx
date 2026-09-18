@@ -2,8 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
-import HowItWorksPage from "./pages/HowItWorksPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import StudioPage from "./pages/StudioPage";
+import { PhotoboothProvider } from "./contexts/PhotoboothContext";
 
 function App() {
   return (
@@ -11,8 +12,15 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="how-it-works" element={<HowItWorksPage />} />
-          <Route path="studio" element={<StudioPage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route
+            path="studio"
+            element={
+              <PhotoboothProvider>
+                <StudioPage />
+              </PhotoboothProvider>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

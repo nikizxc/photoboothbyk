@@ -9,16 +9,16 @@ import {
 } from "./ui/select";
 
 const TimerSelect = ({
-  setTimer,
+  onTimerChange,
 }: {
-  setTimer: React.Dispatch<React.SetStateAction<number>>;
+  onTimerChange: (value: number) => void;
 }) => {
   return (
     <Select
       items={TIMER_OPTIONS}
       defaultValue={3}
       onValueChange={(value) => {
-        if (value != null) setTimer(Number(value));
+        if (value != null) onTimerChange(Number(value));
       }}
     >
       <SelectTrigger className=" h-full!">
