@@ -8,13 +8,7 @@ import { Timer } from "@/services/timer.service";
 import { Image } from "@/services/image.service";
 import CustomizeFrameDialog from "./customize-frame/CustomizeFrameDialog";
 
-const CameraSection = ({
-  shots,
-  layoutId,
-  totalShots,
-  onAddShot,
-  onResetShot,
-}: any) => {
+const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
   const cameraRef = useRef<Webcam>(null);
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -121,7 +115,12 @@ const CameraSection = ({
 
             <TimerSelect onTimerChange={onTimerChange} />
           </div>
-          <Button onClick={onCapture} variant="default" className="h-full">
+          <Button
+            onClick={onCapture}
+            disabled={!isStreaming}
+            variant="default"
+            className="h-full"
+          >
             <Camera strokeWidth={3} />
             Start
           </Button>
@@ -132,7 +131,7 @@ const CameraSection = ({
             <Camera strokeWidth={3} />
             Retake
           </Button>
-          <CustomizeFrameDialog layoutId={layoutId} shots={shots} />
+          <CustomizeFrameDialog />
         </div>
       )}
     </div>

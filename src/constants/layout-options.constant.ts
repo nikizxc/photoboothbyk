@@ -2,8 +2,9 @@ import { LayoutA } from "@/components/layouts/LayoutA";
 import { LayoutB } from "@/components/layouts/LayoutB";
 import { LayoutC } from "@/components/layouts/LayoutC";
 import { Vintage } from "@/components/layouts/Vintage";
+import type { LayoutOptionsProps } from "@/types/layout.type";
 
-export const LAYOUT_OPTIONS = [
+export const LAYOUT_OPTIONS: LayoutOptionsProps[] = [
   {
     label: "Layout A",
     shots: 3,

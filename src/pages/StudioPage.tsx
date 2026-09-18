@@ -2,13 +2,26 @@ import { useState } from "react";
 import LayoutOptions from "../components/LayoutOptions";
 import StartCapturing from "../components/StartCapturing";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
 const StudioPage = () => {
-  const [layoutId, setLayoutId] = useState<React.ComponentType<{
-    shots: string[];
-  }> | null>(null);
-  const [totalShots, setTotalShots] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<string>("choose-layout");
+  const { selectedLayout, setSelectedLayout, setShots, setCustomization } =
+    usePhotobooth();
+
+  const resetPhotobooth = () => {
+    setShots([]);
+    setSelectedLayout(null);
+    setCustomization({
+      selectedColor: "#000000",
+      selectedBg: undefined,
+      label: {
+        isChecked: true,
+        color: "#FFFFFF",
+      },
+      stickers: [],
+    });
+  };
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -18,9 +31,14 @@ const StudioPage = () => {
         className="flex h-full w-full flex-1 flex-col gap-5"
       >
         <TabsList className="gap-1">
-          <TabsTrigger value="choose-layout">choose a layout</TabsTrigger>
+          <TabsTrigger value="choose-layout" onClick={resetPhotobooth}>
+            choose a layout
+          </TabsTrigger>
 
-          <TabsTrigger disabled={layoutId === null} value="start-capturing">
+          <TabsTrigger
+            disabled={selectedLayout === null}
+            value="start-capturing"
+          >
             start capturing
           </TabsTrigger>
         </TabsList>
@@ -35,15 +53,11 @@ const StudioPage = () => {
               layouts
             </p>
           </div>
-          <LayoutOptions
-            setLayoutId={setLayoutId}
-            setActiveTab={setActiveTab}
-            setTotalShots={setTotalShots}
-          />
+          <LayoutOptions onChangeTab={(tab) => setActiveTab(tab)} />
         </TabsContent>
 
         <TabsContent value="start-capturing" className="flex w-full flex-1">
-          <StartCapturing layoutId={layoutId} totalShots={totalShots} />
+          <StartCapturing />
         </TabsContent>
       </Tabs>
     </div>

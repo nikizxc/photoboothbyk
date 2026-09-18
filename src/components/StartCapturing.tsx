@@ -1,10 +1,9 @@
-import { useState } from "react";
-
 import ShotsSection from "./ShotsSection";
 import CameraSection from "./CameraSection";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
-const StartCapturing = ({ layoutId, totalShots }: any) => {
-  const [shots, setShots] = useState<string[]>([]);
+const StartCapturing = () => {
+  const { shots, setShots, selectedLayout } = usePhotobooth();
 
   const onAddShot = (image: string) => {
     setShots((prev) => [...prev, image]);
@@ -29,14 +28,13 @@ const StartCapturing = ({ layoutId, totalShots }: any) => {
         <div className="flex gap-6 h-125">
           <CameraSection
             shots={shots}
-            layoutId={layoutId}
-            totalShots={totalShots}
+            totalShots={selectedLayout?.shots ?? 0}
             onAddShot={onAddShot}
             onResetShot={onResetShot}
           />
           <ShotsSection
             shots={shots}
-            totalShots={totalShots}
+            totalShots={selectedLayout?.shots ?? 0}
             onAddShot={onAddShot}
             onRemoveShot={onRemoveShot}
           />

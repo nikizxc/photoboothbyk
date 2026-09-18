@@ -1,50 +1,42 @@
 import { CircleCheck } from "lucide-react";
 import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import LabelSection from "./LabelSection";
 import BackgroundSection from "./BackgroundSection";
 import StickerSection from "./StickerSection";
 import type { StickerProp } from "@/types/sticker.type";
 import html2canvas from "html2canvas";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
 type LabelProps =
   | { prop: "isChecked"; value: boolean }
   | { prop: "color"; value: string };
 
-const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(
-    "#000000",
-  );
-  const [selectedBg, setSelectedBg] = useState<string | undefined>(undefined);
-  const [label, setLabel] = useState({
-    isChecked: true,
-    color: "#FFFFFF",
-  });
-  const [stickers, setStickers] = useState<StickerProp[]>([]);
+const CustomizeFrameDialog = () => {
+  const { selectedLayout, customization, setCustomization } = usePhotobooth();
+
   const frameRef = useRef<HTMLDivElement>(null);
 
-  const Component = layoutId;
+  const Component = selectedLayout?.frame;
 
   const onBackgroundChange = (value: string, type: string) => {
-    if (type === "color") {
-      setSelectedBg(undefined);
-      setSelectedColor(value);
-    } else {
-      setSelectedColor(undefined);
-      setSelectedBg(value);
-    }
+    setCustomization((prev) => ({
+      ...prev,
+      selectedColor: type === "color" ? value : undefined,
+      selectedBg: type === "bg" ? value : undefined,
+    }));
   };
 
   const onLabelChange = ({ prop, value }: LabelProps) => {
-    setLabel((prev) => ({
+    setCustomization((prev) => ({
       ...prev,
-      [prop]: value,
+      label: { ...customization.label, [prop]: value },
     }));
   };
 
   const addSticker = (src: string) => {
-    if (stickers.length === 3) {
+    if (customization.stickers.length === 3) {
       alert("You can only add up to 3 stickers.");
       return;
     }
@@ -54,25 +46,40 @@ const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
       rotation: 0,
     };
 
-    setStickers((prev) => [...prev, newSticker]);
+    setCustomization((prev) => ({
+      ...prev,
+      stickers: [...customization.stickers, newSticker],
+    }));
   };
 
   const onStickerChangeSize = (index: number, size: number) => {
-    setStickers((prev) =>
-      prev.map((sticker, i) => (i === index ? { ...sticker, size } : sticker)),
+    const updatedStickers = customization.stickers.map((sticker, i) =>
+      i === index ? { ...sticker, size } : sticker,
     );
+    setCustomization((prev) => ({
+      ...prev,
+      stickers: updatedStickers,
+    }));
   };
 
   const onStickerRotate = (index: number, rotation: number) => {
-    setStickers((prev) =>
-      prev.map((sticker, i) =>
-        i === index ? { ...sticker, rotation } : sticker,
-      ),
+    const updatedStickers = customization.stickers.map((sticker, i) =>
+      i === index ? { ...sticker, rotation } : sticker,
     );
+    setCustomization((prev) => ({
+      ...prev,
+      stickers: updatedStickers,
+    }));
   };
 
   const onStickerRemove = (index: number) => {
-    setStickers((prev) => prev.filter((_, i) => i !== index));
+    const updatedStickers = customization.stickers.filter(
+      (_, i) => i !== index,
+    );
+    setCustomization((prev) => ({
+      ...prev,
+      stickers: updatedStickers,
+    }));
   };
 
   const onDone = async () => {
@@ -118,22 +125,18 @@ const CustomizeFrameDialog = ({ layoutId, shots }: any) => {
       <DialogContent className="max-w-5xl! h-160">
         <div className="flex gap-4 h-full min-h-0">
           <div className="flex-1 flex justify-center items-center overflow-hidden scale-90">
-            <Component
-              shots={shots}
-              selectedBg={selectedBg}
-              selectedColor={selectedColor}
-              label={label}
-              stickers={stickers}
-              frameRef={frameRef}
-            />
+            {Component && <Component frameRef={frameRef} />}
           </div>
 
           <div className="flex-1 flex flex-col py-10 gap-6 overflow-y-auto px-2">
             <BackgroundSection onBackgroundChange={onBackgroundChange} />
-            <LabelSection onLabelChange={onLabelChange} label={label} />
+            <LabelSection
+              onLabelChange={onLabelChange}
+              label={customization.label}
+            />
             <StickerSection
               addSticker={addSticker}
-              stickers={stickers}
+              stickers={customization.stickers}
               onStickerChangeSize={onStickerChangeSize}
               onStickerRemove={onStickerRemove}
               onStickerRotate={onStickerRotate}

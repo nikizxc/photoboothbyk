@@ -21,6 +21,7 @@ const StickerSection = ({
   onStickerRemove,
   onStickerRotate,
 }: StickerSectionProps) => {
+  console.log(stickers);
   return (
     <div className="flex flex-col gap-3">
       <Label className="font-semibold">✨ Sticker (Max of 3)</Label>

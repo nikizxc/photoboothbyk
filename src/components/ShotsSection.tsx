@@ -21,13 +21,13 @@ const ShotsSection = ({ shots, totalShots, onAddShot, onRemoveShot }: any) => {
           {Array.from({ length: totalShots }).map((_, index) => (
             <div
               key={index}
-              className="relative w-40 border-dashed border border-muted-foreground h-30 flex justify-center items-center"
+              className="relative w-40 border-dashed border border-muted-foreground h-35 flex justify-center items-center overflow-hidden"
             >
               {shots[index] ? (
                 <>
                   <img
                     src={shots[index]}
-                    className="w-full h-full object-cover"
+                    className="object-cover w-full h-full"
                     alt={`Shot ${index + 1}`}
                   />
                   <Button

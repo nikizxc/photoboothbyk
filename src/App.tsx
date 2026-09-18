@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import StudioPage from "./pages/StudioPage";
+import { PhotoboothProvider } from "./contexts/PhotoboothContext";
 
 function App() {
   return (
@@ -12,7 +13,14 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="studio" element={<StudioPage />} />
+          <Route
+            path="studio"
+            element={
+              <PhotoboothProvider>
+                <StudioPage />
+              </PhotoboothProvider>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

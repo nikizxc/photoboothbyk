@@ -1,15 +1,11 @@
 import type { LayoutProps } from "@/types/layout.type";
 import { Fragment } from "react/jsx-runtime";
 import StickerItem from "../customize-frame/StickerItem";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
-export const LayoutC = ({
-  frameRef,
-  shots,
-  selectedBg,
-  selectedColor,
-  label,
-  stickers,
-}: LayoutProps) => {
+export const LayoutC = ({ frameRef }: LayoutProps) => {
+  const { customization, shots } = usePhotobooth();
+  const { selectedBg, selectedColor, label, stickers } = customization;
   return (
     <div
       ref={frameRef}
