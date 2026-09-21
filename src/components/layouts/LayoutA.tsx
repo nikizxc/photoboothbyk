@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 import StickerItem from "../customize-frame/StickerItem";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import LayoutLabel from "./LayoutLabel";
 
 export const LayoutA = ({ frameRef }: LayoutProps) => {
   const { customization, shots } = usePhotobooth();
@@ -58,22 +59,7 @@ export const LayoutA = ({ frameRef }: LayoutProps) => {
           alignItems: "center",
         }}
       >
-        {label?.isChecked && (
-          <p
-            style={{
-              margin: 0,
-              paddingTop: "4px",
-              textAlign: "center",
-              fontWeight: 700,
-              fontSize: "10px",
-              letterSpacing: "0.025em",
-              color: label.color,
-              flexShrink: 0,
-            }}
-          >
-            photoboothbyk
-          </p>
-        )}
+        {label?.isChecked && <LayoutLabel color={label.color} />}
       </div>
 
       {stickers?.map((sticker, index) => (

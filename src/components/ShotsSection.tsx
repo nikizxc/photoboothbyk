@@ -17,47 +17,49 @@ const ShotsSection = ({ shots, totalShots, onAddShot, onRemoveShot }: any) => {
           shots {shots.length}/{totalShots}
         </p>
 
-        <div className="flex min-h-0 flex-1 flex-col items-center gap-3 overflow-y-auto">
-          {Array.from({ length: totalShots }).map((_, index) => (
-            <div
-              key={index}
-              className="relative w-40 border-dashed border border-muted-foreground h-35 flex justify-center items-center overflow-hidden"
-            >
-              {shots[index] ? (
-                <>
-                  <img
-                    src={shots[index]}
-                    className="object-cover w-full h-full"
-                    alt={`Shot ${index + 1}`}
-                  />
-                  <Button
-                    className="absolute top-2 right-2 size-7 rounded-full p-0 backdrop-blur-sm "
-                    variant="secondary"
-                    size="icon"
-                    onClick={() => onRemoveShot(index)}
-                  >
-                    <X className="size-4" strokeWidth={2} />
-                  </Button>
-                </>
-              ) : (
-                <label className="cursor-pointer">
-                  <ImagePlus className="text-muted-foreground m-auto" />
-                  <span className="text-xs text-muted-foreground">
-                    upload photo
-                  </span>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="flex flex-col items-center gap-3">
+            {Array.from({ length: totalShots }).map((_, index) => (
+              <div
+                key={index}
+                className="relative w-40 border-dashed border border-muted-foreground h-30 flex justify-center items-center overflow-hidden"
+              >
+                {shots[index] ? (
+                  <>
+                    <img
+                      src={shots[index]}
+                      className="object-cover w-full h-full"
+                      alt={`Shot ${index + 1}`}
+                    />
+                    <Button
+                      className="absolute top-2 right-2 size-7 rounded-full p-0 "
+                      variant="secondary"
+                      size="icon"
+                      onClick={() => onRemoveShot(index)}
+                    >
+                      <X className="size-4" />
+                    </Button>
+                  </>
+                ) : (
+                  <label className="cursor-pointer">
+                    <ImagePlus className="text-muted-foreground m-auto" />
+                    <span className="text-xs text-muted-foreground">
+                      upload photo
+                    </span>
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      handleImageUpload(e.target.files);
-                    }}
-                  />
-                </label>
-              )}
-            </div>
-          ))}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        handleImageUpload(e.target.files);
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

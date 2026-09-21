@@ -26,8 +26,8 @@ const Header = () => {
           {navigationItems.map(({ label, path }) => (
             <Button
               key={label}
-              variant="ghost"
-              className={`text-md tracking-tight ${currentLocation !== path && "text-foreground/70"}`}
+              variant="link"
+              className={`text-md tracking-tight ${currentLocation === path && "text-primary-foreground"}`}
               onClick={() => navigate(path)}
             >
               {label}

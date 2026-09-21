@@ -121,14 +121,14 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
             variant="default"
             className="h-full"
           >
-            <Camera strokeWidth={3} />
+            <Camera />
             Start
           </Button>
         </div>
       ) : (
         <div className="flex justify-end gap-2 h-12">
           <Button onClick={onRetake} variant="secondary" className="h-full ">
-            <Camera strokeWidth={3} />
+            <Camera />
             Retake
           </Button>
           <CustomizeFrameDialog />

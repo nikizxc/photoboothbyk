@@ -1,4 +1,4 @@
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Download } from "lucide-react";
 import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { useRef } from "react";
@@ -8,6 +8,7 @@ import StickerSection from "./StickerSection";
 import type { StickerProp } from "@/types/sticker.type";
 import html2canvas from "html2canvas";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 type LabelProps =
   | { prop: "isChecked"; value: boolean }
@@ -117,7 +118,7 @@ const CustomizeFrameDialog = () => {
       <DialogTrigger
         render={
           <Button variant="default" className="h-full">
-            <CircleCheck strokeWidth={3} />
+            <CircleCheck />
             Done
           </Button>
         }
@@ -128,7 +129,7 @@ const CustomizeFrameDialog = () => {
             {Component && <Component frameRef={frameRef} />}
           </div>
 
-          <div className="flex-1 flex flex-col py-10 gap-6 overflow-y-auto px-2">
+          <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-2 mt-10">
             <BackgroundSection onBackgroundChange={onBackgroundChange} />
             <LabelSection
               onLabelChange={onLabelChange}
@@ -141,13 +142,41 @@ const CustomizeFrameDialog = () => {
               onStickerRemove={onStickerRemove}
               onStickerRotate={onStickerRotate}
             />
-            <Button
-              variant="default"
-              className="w-fit ml-auto mt-auto"
-              onClick={onDone}
-            >
-              Download
-            </Button>
+            <Popover>
+              <PopoverTrigger
+                render={
+                  <Button variant="default" className="w-fit ml-auto mt-auto">
+                    <Download className="size-4" />
+                    Download
+                  </Button>
+                }
+              />
+
+              <PopoverContent
+                align="end"
+                side="top"
+                sideOffset={8}
+                className="w-40 p-2 "
+              >
+                <div className="flex flex-col gap-1">
+                  <Button
+                    variant="ghost"
+                    className="justify-start "
+                    onClick={onDone}
+                  >
+                    PNG
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    className="justify-start "
+                    // onClick={downloadAsGif}
+                  >
+                    GIF
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
       </DialogContent>
