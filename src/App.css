@@ -76,12 +76,12 @@ body {
   --card-foreground: #722f37;
   --popover: #f8f4e3;
   --popover-foreground: #722f37;
-  --primary: #d9a441;
+  --primary: #1e3a5f;
   --primary-foreground: #f8f4e3;
-  --secondary: #8f555b;
+  --secondary: #92505a;
   --secondary-foreground: #f8f4e3;
   --muted: oklch(0.97 0 0);
-  --muted-foreground: #b8b2a6;
+  --muted-foreground: #c9bca8;
   --accent: #722f37;
   --accent-foreground: #f8f4e3;
   --destructive: oklch(0.577 0.245 27.325);
@@ -162,4 +162,26 @@ body {
   100% {
     opacity: 0;
   }
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #666666 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666666;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #808080;
 }

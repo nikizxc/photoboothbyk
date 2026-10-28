@@ -2,6 +2,7 @@ import type { LayoutProps } from "@/types/layout.type";
 import { Fragment } from "react/jsx-runtime";
 import StickerItem from "../customize-frame/StickerItem";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import LayoutLabel from "./LayoutLabel";
 
 export const LayoutB = ({ frameRef }: LayoutProps) => {
   const { customization, shots } = usePhotobooth();
@@ -28,14 +29,7 @@ export const LayoutB = ({ frameRef }: LayoutProps) => {
         </div>
       ))}
 
-      {label?.isChecked && (
-        <p
-          className="text-center font-bold text-[10px] tracking-wide shrink-0 pt-1"
-          style={{ color: label.color }}
-        >
-          photoboothbyk
-        </p>
-      )}
+      {label?.isChecked && <LayoutLabel color={label.color} />}
 
       {stickers?.map((sticker, index) => (
         <Fragment key={index}>

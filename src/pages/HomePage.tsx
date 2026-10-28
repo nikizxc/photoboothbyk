@@ -1,4 +1,4 @@
-import { Camera } from "lucide-react";
+import { ArrowRight, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,11 @@ const HomePage = () => {
 
             <Button
               variant="default"
-              className="mt-5 font-bold"
+              className="mt-5"
               onClick={() => navigate("/studio")}
             >
-              <Camera className="size-5" strokeWidth={3} />
               START
+              <ArrowRight className="size-4" />
             </Button>
           </div>
         </div>
