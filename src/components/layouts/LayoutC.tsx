@@ -29,9 +29,9 @@ export const LayoutC = ({ frameRef }: LayoutProps) => {
           gridTemplateRows: `repeat(${Math.ceil(shots.length / 2)}, 1fr)`,
         }}
       >
-        {shots.map((image: string, i: number) => (
-          <div key={i} className="w-full h-full overflow-hidden">
-            <img src={image} className="w-full h-full object-cover" />
+        {shots.map((shot) => (
+          <div key={shot.id} className="w-full h-full overflow-hidden">
+            <img src={shot.src!} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>

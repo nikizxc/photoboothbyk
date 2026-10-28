@@ -14,7 +14,7 @@ const LayoutOptions = ({
 }: {
   onChangeTab: (tab: string) => void;
 }) => {
-  const { setSelectedLayout } = usePhotobooth();
+  const { setSelectedLayout, setShots } = usePhotobooth();
 
   return (
     <Carousel className=" h-1/2">
@@ -26,6 +26,14 @@ const LayoutOptions = ({
             onClick={() => {
               setSelectedLayout(layout);
               onChangeTab("start-capturing");
+              setShots(
+                Array.from({ length: layout.shots }, (_, index) => {
+                  return {
+                    id: index,
+                    src: null,
+                  };
+                }),
+              );
             }}
           >
             <LayoutCard layout={layout} />

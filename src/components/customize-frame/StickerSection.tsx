@@ -6,13 +6,13 @@ import type { StickerProp } from "@/types/sticker.type";
 import Options from "./Options";
 import { Fragment } from "react/jsx-runtime";
 
-interface StickerSectionProps {
+type StickerSectionProps = {
   addSticker: (src: string) => void;
   stickers: StickerProp[];
   onStickerChangeSize: (index: number, size: number) => void;
   onStickerRemove: (index: number) => void;
   onStickerRotate: (index: number, rotation: number) => void;
-}
+};
 
 const StickerSection = ({
   addSticker,
@@ -21,9 +21,8 @@ const StickerSection = ({
   onStickerRemove,
   onStickerRotate,
 }: StickerSectionProps) => {
-  console.log(stickers);
   return (
-    <div className="flex flex-col gap-3">
+    <section aria-label="Sticker" className="flex flex-col gap-3">
       <Label className="font-semibold">✨ Sticker (Max of 3)</Label>
       <div className="flex flex-wrap gap-3">
         {Object.values(STICKER_OPTIONS).map((value, index) => (
@@ -86,7 +85,7 @@ const StickerSection = ({
           </Button>
         </div>
       ))}
-    </div>
+    </section>
   );
 };
 

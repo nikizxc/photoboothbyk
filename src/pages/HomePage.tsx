@@ -6,9 +6,8 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <Card className="flex-1 flex flex-col">
-      <CardContent className="flex-1 flex ">
-        {/* Left section */}
+    <Card className="flex flex-col flex-1">
+      <CardContent className="flex flex-1">
         <div className="flex flex-1 items-center justify-center ">
           <div className="relative h-80 w-80">
             <img
@@ -20,17 +19,16 @@ const HomePage = () => {
             <img
               src="layouts/layout-c.png"
               alt="Six-layout"
-              className="absolute top-1/2 left-30 w-50 -translate-y-1/2 rotate-[6deg] shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
+              className="absolute top-1/2 left-30 w-50 -translate-y-1/2 rotate-6 shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-out hover:scale-110"
             />
           </div>
         </div>
 
-        {/* Right section */}
-        <div className="flex flex-col flex-2 items-center justify-center">
+        <div className="flex flex-col flex-2 items-center justify-center relative">
           <div className="w-md text-center">
-            <p className="text-background font-bright-kenly text-5xl">
+            <h1 className="text-background font-bright-kenly text-5xl">
               capture the moment
-            </p>
+            </h1>
 
             <p className="text-muted-foreground text-xl">
               step into our online photobooth—create, customize, and turn every

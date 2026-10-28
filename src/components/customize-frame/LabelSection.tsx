@@ -3,7 +3,7 @@ import { Label } from "../ui/label";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 const LabelSection = ({ onLabelChange, label }: any) => {
   return (
-    <div className="flex flex-col gap-3">
+    <section aria-label="Label" className="flex flex-col gap-3">
       <Label className="text-sm font-semibold">🏷️ Label</Label>
       <ToggleGroup
         variant="outline"
@@ -47,7 +47,7 @@ const LabelSection = ({ onLabelChange, label }: any) => {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

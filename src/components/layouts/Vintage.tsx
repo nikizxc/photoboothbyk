@@ -23,9 +23,9 @@ export const Vintage = ({ frameRef }: LayoutProps) => {
         }),
       }}
     >
-      {shots.slice(0, 2).map((image, i) => (
-        <div key={i} className="w-full h-full overflow-hidden">
-          <img src={image} className="w-full h-full object-cover" />
+      {shots.slice(0, 2).map((shot) => (
+        <div key={shot.id} className="w-full h-full overflow-hidden">
+          <img src={shot.src!} className="w-full h-full object-cover" />
         </div>
       ))}
 
@@ -33,9 +33,9 @@ export const Vintage = ({ frameRef }: LayoutProps) => {
         {label?.isChecked && <LayoutLabel color={label.color} />}
       </div>
 
-      {shots.slice(2).map((image, i) => (
-        <div key={i + 2} className="w-full h-full overflow-hidden">
-          <img src={image} className="w-full h-full object-cover" />
+      {shots.slice(2).map((shot) => (
+        <div key={shot.id + 2} className="w-full h-full overflow-hidden">
+          <img src={shot.src!} className="w-full h-full object-cover" />
         </div>
       ))}
 
