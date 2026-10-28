@@ -1,14 +1,18 @@
 import { useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { Camera } from "lucide-react";
+import { Camera, CircleCheck } from "lucide-react";
 import TimerSelect from "./TimerSelect";
 import Webcam from "react-webcam";
 import Settings from "./Settings";
 import { Timer } from "@/services/timer.service";
 import { Image } from "@/services/image.service";
-import CustomizeFrameDialog from "./customize-frame/CustomizeFrameDialog";
 
-const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import { useNavigate } from "react-router-dom";
+
+const CameraSection = () => {
+  const { getShotsCount, selectedLayout, onAddShot, onResetShot } =
+    usePhotobooth();
   const cameraRef = useRef<Webcam>(null);
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -18,6 +22,9 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
   const [settings, setSettings] = useState({ flash: false, mirror: false });
   const [filter, setFilter] = useState("");
   const [flash, setFlash] = useState(false);
+  const totalShots = selectedLayout?.shots ?? 0;
+
+  const navigate = useNavigate();
 
   const startTimer = async (selectedTimer: number) => {
     setIsTimerRunning(true);
@@ -39,7 +46,7 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
 
   const onCapture = async () => {
     if (!cameraRef.current || !cameraRef.current.video) return;
-    for (let i = shots.length; i < totalShots; i++) {
+    for (let i = getShotsCount(); i < totalShots; i++) {
       await startTimer(timer);
 
       const video = cameraRef.current.video;
@@ -49,7 +56,7 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
       const image = await Image.capture(video, settings.mirror, filter);
 
       if (!image) return;
-      onAddShot(image);
+      onAddShot(i, image);
     }
   };
 
@@ -72,7 +79,7 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
     }));
   };
   return (
-    <div className="flex flex-col gap-3 h-full">
+    <section aria-label="Camera" className="flex flex-col gap-3 h-full">
       <div className="rounded-md p-3 w-150 flex-1 min-h-0 bg-secondary-background relative">
         <Webcam
           mirrored={settings.mirror}
@@ -108,7 +115,7 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
         )}
       </div>
 
-      {shots.length !== totalShots ? (
+      {getShotsCount() !== totalShots ? (
         <div className="flex justify-between h-12">
           <div className="flex gap-2">
             <Settings settings={settings} onSettingsChange={onSettingsChange} />
@@ -122,7 +129,7 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
             className="h-full"
           >
             <Camera />
-            Start
+            Capture
           </Button>
         </div>
       ) : (
@@ -131,10 +138,19 @@ const CameraSection = ({ shots, totalShots, onAddShot, onResetShot }: any) => {
             <Camera />
             Retake
           </Button>
-          <CustomizeFrameDialog />
+          <Button
+            variant="default"
+            onClick={() =>
+              navigate("/studio/customization", { state: "completed" })
+            }
+            className="h-full"
+          >
+            <CircleCheck />
+            Done
+          </Button>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

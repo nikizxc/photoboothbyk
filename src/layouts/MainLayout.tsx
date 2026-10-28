@@ -6,7 +6,9 @@ const MainLayout = () => {
     <div className="bg-background w-full min-h-screen py-10 px-40 text-foreground flex flex-col">
       <Header />
 
-      <Outlet />
+      <main className="flex-1 flex flex-col">
+        <Outlet />
+      </main>
     </div>
   );
 };

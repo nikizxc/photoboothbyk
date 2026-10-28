@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 
 const BackgroundSection = ({ onBackgroundChange, selectedColor }: any) => {
   return (
-    <div className="flex flex-col gap-3">
+    <section aria-label="Background" className="flex flex-col gap-3">
       <Label className="text-sm font-semibold">🎨 Background</Label>
       <div className="flex flex-wrap gap-3">
         <div className="relative w-10 h-10">
@@ -31,7 +31,7 @@ const BackgroundSection = ({ onBackgroundChange, selectedColor }: any) => {
           </Fragment>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -30,9 +30,9 @@ export const LayoutA = ({ frameRef }: LayoutProps) => {
         }),
       }}
     >
-      {shots.map((image: string, i: number) => (
+      {shots.map((shot) => (
         <div
-          key={i}
+          key={shot.id}
           style={{
             width: "100%",
             height: "100%",
@@ -40,8 +40,8 @@ export const LayoutA = ({ frameRef }: LayoutProps) => {
           }}
         >
           <img
-            src={image}
-            alt={`shot-${i}`}
+            src={shot.src!}
+            alt={`Shot-${shot.id}`}
             style={{
               width: "100%",
               height: "100%",
