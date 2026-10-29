@@ -13,6 +13,7 @@ const StickerItem = ({ sticker }: { sticker: StickerProp }) => {
       >
         <img
           src={sticker.src}
+          data-type="sticker"
           draggable={false}
           style={{
             width: `${sticker.size}px`,

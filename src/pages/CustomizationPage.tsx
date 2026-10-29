@@ -1,9 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
@@ -38,21 +33,56 @@ export default function CustomizationPage() {
 
   const Component = selectedLayout?.frame;
 
-  const onDone = async () => {
+  const onDownloadGIF = async () => {
     if (!frameRef.current) return;
 
-    const imgs = Array.from(frameRef.current.querySelectorAll("img"));
+    const imgsEl = frameRef.current.querySelectorAll("img[data-type=shot]");
 
-    await Promise.all(
-      imgs.map((img) => {
-        if (img.complete) return Promise.resolve();
+    const gif = new GIF({
+      workers: 2,
+      quality: 10,
+      workerScript: "/gif.worker.js",
+    });
 
-        return new Promise((resolve, reject) => {
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      }),
-    );
+    const canvas = document.createElement("canvas");
+    canvas.width = 700;
+    canvas.height = 500;
+
+    const ctx = canvas.getContext("2d");
+
+    imgsEl.forEach((img) => {
+      ctx?.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scale = Math.max(
+        canvas.width / img.naturalWidth,
+        canvas.height / img.naturalHeight,
+      );
+
+      const width = img.naturalWidth * scale;
+      const height = img.naturalHeight * scale;
+
+      const x = (canvas.width - width) / 2;
+      const y = (canvas.height - height) / 2;
+
+      ctx?.drawImage(img, x, y, width, height);
+
+      gif.addFrame(canvas, { delay: 700, copy: true });
+    });
+
+    gif.on("finished", function (blob) {
+      const randomId = Math.random().toString(36).slice(2, 10);
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `strip-${randomId}.gif`;
+      link.click();
+    });
+
+    gif.render();
+  };
+
+  const onDownloadPNG = async () => {
+    if (!frameRef.current) return;
 
     const canvas = await html2canvas(frameRef.current, {
       scale: 2,
@@ -101,11 +131,19 @@ export default function CustomizationPage() {
               onStickerRotate={onStickerRotate}
             />
             <div className="flex gap-3 ml-auto mt-auto">
-              <Button variant="default" className="w-25 ">
+              <Button
+                variant="default"
+                className="w-25 "
+                onClick={onDownloadGIF}
+              >
                 <Download className="size-4" />
                 GIF
               </Button>
-              <Button variant="default" className="w-25">
+              <Button
+                variant="default"
+                className="w-25"
+                onClick={onDownloadPNG}
+              >
                 <Download className="size-4" />
                 PNG
               </Button>
