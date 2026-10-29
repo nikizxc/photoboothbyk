@@ -11,4 +11,11 @@ export const BACKGROUND_OPTIONS = {
   fruits: "fruits.png",
   cow: "cow.jpg",
   stars2: "stars2.jpg",
+  balloon: "balloon.jpg",
+  birthday: "birthday.jpg",
+  dogs: "dogs.jpg",
+  dots: "dots.png",
+  kuromi: "kuromi.png",
+  love: "love.jpg",
+  spiral: "spiral.jpg",
 };

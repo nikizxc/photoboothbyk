@@ -24,7 +24,7 @@ const StickerSection = ({
   return (
     <section aria-label="Sticker" className="flex flex-col gap-3">
       <Label className="font-semibold">✨ Sticker (Max of 3)</Label>
-      <div className="flex flex-wrap gap-3">
+      <div className="grid grid-cols-10 gap-3">
         {Object.values(STICKER_OPTIONS).map((value, index) => (
           <Fragment key={index}>
             <Options
