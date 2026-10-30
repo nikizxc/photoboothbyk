@@ -20,14 +20,19 @@ const StudioPage = () => {
         onValueChange={setActiveTab}
         className="flex h-full w-full flex-1 flex-col gap-5"
       >
-        <TabsList className="gap-1">
-          <TabsTrigger value="choose-layout" onClick={onPhotoboothReset}>
+        <TabsList className="gap-1 md:w-fit w-full">
+          <TabsTrigger
+            value="choose-layout"
+            onClick={onPhotoboothReset}
+            className="md:text-sm text-xs"
+          >
             choose a layout
           </TabsTrigger>
 
           <TabsTrigger
             disabled={selectedLayout === null}
             value="start-capturing"
+            className="md:text-sm text-xs"
           >
             start capturing
           </TabsTrigger>
@@ -37,7 +42,7 @@ const StudioPage = () => {
           value="choose-layout"
           className="flex flex-col w-full flex-1 justify-center items-center gap-6"
         >
-          <p className="text-muted-foreground text-lg w-100 text-center">
+          <p className="text-muted-foreground md:text-base text-sm text-center">
             select how your photos will be framed from our classic or template
             layouts
           </p>

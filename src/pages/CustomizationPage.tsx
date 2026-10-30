@@ -98,26 +98,26 @@ export default function CustomizationPage() {
     link.click();
   };
   return (
-    <Card className="flex-1 py-10 relative">
+    <Card className="flex-1 md:py-10 relative">
       <Button
         variant="ghost"
-        className="w-fit absolute left-5 top-5"
+        className="w-fit md:absolute left-5 top-5"
         onClick={() => navigate("/studio", { state: "start-capturing" })}
       >
         <ArrowLeft className="size-5" />
       </Button>
       <CardHeader className="flex justify-center">
-        <CardTitle className=" text-center text-3xl font-bright-kenly border border-secondary border-dashed w-fit p-3 rounded-full">
+        <CardTitle className=" text-center md:text-3xl text-xl font-bright-kenly border border-secondary border-dashed w-fit p-3 rounded-full">
           Customize your photobooth strip
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-4 h-full min-h-0">
-          <div className="flex-1 flex justify-center items-center overflow-hidden scale-90">
+        <div className="flex md:flex-row flex-col gap-4 h-full min-h-0">
+          <div className="flex-1 flex justify-center items-start overflow-hidden">
             {Component && <Component frameRef={frameRef} />}
           </div>
 
-          <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-2 mt-10">
+          <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-2">
             <BackgroundSection onBackgroundChange={onBackgroundChange} />
             <LabelSection
               onLabelChange={onLabelChange}

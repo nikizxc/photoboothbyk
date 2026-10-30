@@ -14,29 +14,15 @@ const LayoutOptions = ({
 }: {
   onChangeTab: (tab: string) => void;
 }) => {
-  const { setSelectedLayout, setShots } = usePhotobooth();
-
   return (
-    <Carousel className=" h-1/2">
-      <CarouselContent className="w-3xl  px-5">
+    <Carousel className="h-1/2 md:w-4xl w-full">
+      <CarouselContent>
         {LAYOUT_OPTIONS.map((layout, index) => (
           <CarouselItem
-            className="basis-1/3 h-full"
+            className="md:basis-1/3 basis-full h-full px-15"
             key={index}
-            onClick={() => {
-              setSelectedLayout(layout);
-              onChangeTab("start-capturing");
-              setShots(
-                Array.from({ length: layout.shots }, (_, index) => {
-                  return {
-                    id: index,
-                    src: null,
-                  };
-                }),
-              );
-            }}
           >
-            <LayoutCard layout={layout} />
+            <LayoutCard layout={layout} onChangeTab={onChangeTab} />
           </CarouselItem>
         ))}
       </CarouselContent>

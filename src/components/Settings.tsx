@@ -16,7 +16,7 @@ const Settings = ({
   return (
     <Popover>
       <PopoverTrigger className="bg-popover rounded-md p-2 text-secondary-background-foreground">
-        <CogIcon />
+        <CogIcon className="size-5" />
       </PopoverTrigger>
       <PopoverContent side="top" align="center" className="w-40">
         <FieldGroup className="gap-3">

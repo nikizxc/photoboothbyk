@@ -21,8 +21,8 @@ const TimerSelect = ({
         if (value != null) onTimerChange(Number(value));
       }}
     >
-      <SelectTrigger className=" h-full!">
-        <SelectValue />
+      <SelectTrigger className="h-full!">
+        <SelectValue className="md:text-base text-sm" />
       </SelectTrigger>
 
       <SelectContent>

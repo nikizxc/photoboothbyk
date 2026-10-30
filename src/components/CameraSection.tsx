@@ -79,8 +79,8 @@ const CameraSection = () => {
     }));
   };
   return (
-    <section aria-label="Camera" className="flex flex-col gap-3 h-full">
-      <div className="rounded-md p-3 w-150 flex-1 min-h-0 bg-secondary-background relative">
+    <section aria-label="Camera" className="flex flex-col gap-3 ">
+      <div className="md:w-150 w-full lg:h-full h-80 rounded-md p-3 bg-secondary-background relative">
         <Webcam
           mirrored={settings.mirror}
           audio={false}
@@ -101,7 +101,7 @@ const CameraSection = () => {
         )}
 
         {!isStreaming && (
-          <p className="flex items-center justify-center absolute inset-0 text-secondary-background-foreground font-semibold">
+          <p className="flex items-center md:text-sm text-xs justify-center absolute inset-0 text-secondary-background-foreground font-semibold">
             Waiting for camera...
           </p>
         )}

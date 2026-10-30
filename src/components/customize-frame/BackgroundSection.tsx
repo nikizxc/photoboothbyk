@@ -5,9 +5,9 @@ import { Fragment } from "react/jsx-runtime";
 
 const BackgroundSection = ({ onBackgroundChange, selectedColor }: any) => {
   return (
-    <section aria-label="Background" className="flex flex-col gap-3">
-      <Label className="text-sm font-semibold">🎨 Background</Label>
-      <div className="grid grid-cols-10 gap-3">
+    <section aria-label="Background" className="flex flex-col gap-6">
+      <Label className="md:text-sm text-xs font-semibold">🎨 Background</Label>
+      <div className="grid md:grid-cols-10 grid-cols-5 gap-3">
         <div className="relative w-10 h-10">
           <div
             className="w-10 h-10 rounded-full shadow-lg ring-2 ring-white hover:scale-110 transition-transform "
