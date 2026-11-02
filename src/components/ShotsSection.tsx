@@ -15,14 +15,17 @@ const ShotsSection = () => {
   };
 
   return (
-    <section aria-label="Shots">
-      <Card className="lg:w-60 w-full lg:h-125 h-full">
+    <section
+      aria-label="Shots"
+      className="w-full min-w-0 lg:h-125 lg:w-60 lg:shrink-0"
+    >
+      <Card className="w-full h-full">
         <CardContent className="flex h-full flex-col gap-3">
           <p className="shrink-0 text-center font-semibold">
             shots {getShotsCount()}/{selectedLayout?.shots}
           </p>
 
-          <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="min-h-0 max-h-80 flex-1 overflow-y-auto lg:max-h-none">
             <ul className="flex lg:flex-col flex-row flex-wrap items-center gap-3">
               {shots.map((shot) => (
                 <li

@@ -8,16 +8,12 @@ import { useRef } from "react";
 import LabelSection from "@/components/customize-frame/LabelSection";
 import BackgroundSection from "@/components/customize-frame/BackgroundSection";
 import StickerSection from "@/components/customize-frame/StickerSection";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CaptureGuard from "@/components/CaptureGuard";
 
 export default function CustomizationPage() {
-  const status = useLocation().state;
-
-  if (!status) {
-    return <CaptureGuard />;
-  }
   const {
+    shots,
     selectedLayout,
     customization,
     onBackgroundChange,
@@ -28,6 +24,10 @@ export default function CustomizationPage() {
     onStickerRemove,
   } = usePhotobooth();
 
+  if (shots.length === 0 && !selectedLayout) {
+    return <CaptureGuard />;
+  }
+
   const frameRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -36,7 +36,8 @@ export default function CustomizationPage() {
   const onDownloadGIF = async () => {
     if (!frameRef.current) return;
 
-    const imgsEl = frameRef.current.querySelectorAll("img[data-type=shot]");
+    const imgsEl: NodeListOf<HTMLImageElement> =
+      frameRef.current.querySelectorAll("img[data-type=shot]");
 
     const gif = new GIF({
       workers: 2,

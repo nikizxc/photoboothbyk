@@ -8,6 +8,7 @@ import { PhotoboothProvider } from "./contexts/PhotoboothContext";
 import CustomizationPage from "./pages/CustomizationPage";
 import StudioLayout from "./layouts/StudioLayout";
 import NotFound from "./components/NotFound";
+import { SettingsProvider } from "./contexts/SettingsContext";
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
               index
               element={
                 <PhotoboothProvider>
-                  <StudioPage />
+                  <SettingsProvider>
+                    <StudioPage />
+                  </SettingsProvider>
                 </PhotoboothProvider>
               }
             />
