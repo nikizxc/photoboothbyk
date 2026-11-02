@@ -1,5 +1,5 @@
 import { ColorMatrixFilter, Filter } from "pixi.js";
-import { OldFilmFilter, GrayscaleFilter } from "pixi-filters";
+import { GrayscaleFilter } from "pixi-filters";
 import { makeVintage } from "@/constants/custom-filters.constant";
 
 export const FILTERS_OPTIONS: Record<string, () => Filter[]> = {

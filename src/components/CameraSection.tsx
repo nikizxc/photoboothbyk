@@ -93,7 +93,7 @@ const CameraSection = () => {
   return (
     <section
       aria-label="Camera"
-      className="flex w-full min-w-0 max-w-2xl flex-col gap-3 lg:flex-1"
+      className="flex w-full min-w-0 max-w-2xl flex-col gap-3 xl:w-2xl"
     >
       <PixiCam
         filter={filter}

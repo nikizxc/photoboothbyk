@@ -44,8 +44,8 @@ const FilterOptions = ({
             const active = index === selected;
             return (
               <CarouselItem key={key} className="flex h-full basis-15 pl-0">
-                <button
-                  type="button"
+                <img
+                  src={`/filters/${key}.jpg`}
                   aria-label={key}
                   onClick={() => {
                     api?.scrollTo(index);

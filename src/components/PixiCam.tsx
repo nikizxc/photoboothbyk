@@ -54,8 +54,8 @@ export default function PixiCam({
       const sprite = new Sprite(Texture.from(video));
       sprite.width = 640;
       sprite.height = 480;
-      sprite.scale.x *= -1;
-      sprite.x = 640;
+      sprite.scale.x = isMirrored ? -1 : 1;
+      sprite.x = isMirrored ? 640 : 1;
 
       app.stage.addChild(sprite);
 
@@ -90,7 +90,7 @@ export default function PixiCam({
   }, [isMirrored]);
 
   return (
-    <div className="rounded-md p-3 bg-secondary-background">
+    <div className="rounded-md p-3 bg-secondary-background w-full ">
       <Webcam
         ref={webcamRef}
         style={{ display: "none" }}
@@ -101,11 +101,17 @@ export default function PixiCam({
       />
       <div
         ref={hostRef}
-        className="w-full mx-auto aspect-4/3 [&>canvas]:w-full [&>canvas]:h-full relative"
+        className="w-full aspect-4/3 [&>canvas]:w-full [&>canvas]:h-full relative"
       >
         {!isStreaming && (
           <p className="flex items-center md:text-sm text-xs justify-center absolute inset-0 ">
             Waiting for camera...
+          </p>
+        )}
+
+        {filter !== "none" && (
+          <p className=" md:text-sm bottom-5 text-xs justify-center absolute inset-x-0 text-center pointer-events-none font-medium">
+            {filter}
           </p>
         )}
 
@@ -116,13 +122,13 @@ export default function PixiCam({
             </p>
           </div>
         )}
-      </div>
 
-      <div
-        className={`pointer-events-none absolute inset-0 bg-white transition-opacity ${
-          flash ? "opacity-100 duration-75" : "opacity-0 duration-300"
-        }`}
-      />
+        <div
+          className={`pointer-events-none absolute inset-0 bg-white transition-opacity ${
+            flash ? "opacity-100 duration-75" : "opacity-0 duration-300"
+          }`}
+        />
+      </div>
     </div>
   );
 }
