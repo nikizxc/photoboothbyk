@@ -25,7 +25,11 @@ export const Vintage = ({ frameRef }: LayoutProps) => {
     >
       {shots.slice(0, 2).map((shot) => (
         <div key={shot.id} className="w-full h-full overflow-hidden">
-          <img src={shot.src!} className="w-full h-full object-cover" />
+          <img
+            data-type="shot"
+            src={shot.src!}
+            className="w-full h-full object-cover"
+          />
         </div>
       ))}
 
@@ -35,7 +39,11 @@ export const Vintage = ({ frameRef }: LayoutProps) => {
 
       {shots.slice(2).map((shot) => (
         <div key={shot.id + 2} className="w-full h-full overflow-hidden">
-          <img src={shot.src!} className="w-full h-full object-cover" />
+          <img
+            data-type="shot"
+            src={shot.src!}
+            className="w-full h-full object-cover"
+          />
         </div>
       ))}
 

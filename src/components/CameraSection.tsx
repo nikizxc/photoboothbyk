@@ -1,63 +1,81 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Camera, CircleCheck } from "lucide-react";
-import TimerSelect from "./TimerSelect";
 import Webcam from "react-webcam";
 import Settings from "./Settings";
 import { Timer } from "@/services/timer.service";
-import { Image } from "@/services/image.service";
 
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
 import { useNavigate } from "react-router-dom";
+import PixiCam from "./PixiCam";
+import { ColorMatrixFilter, type Application, type Sprite } from "pixi.js";
+import { useSettings } from "@/contexts/SettingsContext";
+import FilterOptions from "./FilterOptions";
 
 const CameraSection = () => {
   const { getShotsCount, selectedLayout, onAddShot, onResetShot } =
     usePhotobooth();
-  const cameraRef = useRef<Webcam>(null);
+  const webcamRef = useRef<Webcam>(null);
+  const appRef = useRef<Application | null>(null);
+  const spriteRef = useRef<Sprite | null>(null);
   const [isStreaming, setIsStreaming] = useState(true);
 
-  const [timer, setTimer] = useState<number>(3);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  const [settings, setSettings] = useState({ flash: false, mirror: false });
-  const [filter, setFilter] = useState("");
+  const { timer, isFlashEnabled } = useSettings();
+  const [filter, setFilter] = useState("none");
   const [flash, setFlash] = useState(false);
   const totalShots = selectedLayout?.shots ?? 0;
+  const [countdown, setCountdown] = useState(3);
 
   const navigate = useNavigate();
 
-  const startTimer = async (selectedTimer: number) => {
-    setIsTimerRunning(true);
-    await Timer.start(timer, (count) => setTimer(count));
-    setIsTimerRunning(false);
-    setTimer(selectedTimer);
-  };
+  useEffect(() => {
+    if (timer) {
+      setCountdown(timer);
+    }
+  }, [timer]);
 
-  const triggerFlash = async () => {
-    if (!settings.flash) return;
-    setFlash(true);
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        setFlash(false);
-        resolve();
-      }, 150);
-    });
+  const startTimer = async () => {
+    setIsTimerRunning(true);
+    await Timer.start(timer, (count) => setCountdown(count));
+    setIsTimerRunning(false);
+    setCountdown(timer);
   };
 
   const onCapture = async () => {
-    if (!cameraRef.current || !cameraRef.current.video) return;
+    const app = appRef.current;
+    const sprite = spriteRef.current;
+    if (!app || !sprite) return;
+
+    const originalFilters = [...sprite.filters];
+    const bright = new ColorMatrixFilter();
+    bright.brightness(1.5, false);
+
     for (let i = getShotsCount(); i < totalShots; i++) {
-      await startTimer(timer);
+      try {
+        await startTimer();
 
-      const video = cameraRef.current.video;
+        if (isFlashEnabled) {
+          setFlash(true);
+          sprite.filters = [...originalFilters, bright];
+          app.render();
+        }
 
-      await triggerFlash();
+        const dataUrl = await app.renderer.extract.base64(app.stage);
 
-      const image = await Image.capture(video, settings.mirror, filter);
-
-      if (!image) return;
-      onAddShot(i, image);
+        onAddShot(i, dataUrl);
+      } catch (error) {
+        console.error(error);
+        break;
+      } finally {
+        if (isFlashEnabled) {
+          sprite.filters = originalFilters;
+          setFlash(false);
+        }
+      }
     }
+    bright.destroy();
   };
 
   const onRetake = () => {
@@ -68,69 +86,45 @@ const CameraSection = () => {
     onResetShot();
   };
 
-  const onTimerChange = (value: number) => {
-    setTimer(value);
+  const onFilterChange = (key: string) => {
+    setFilter(key);
   };
 
-  const onSettingsChange = (prop: string, value: boolean) => {
-    setSettings((prev) => ({
-      ...prev,
-      [prop]: value,
-    }));
-  };
   return (
-    <section aria-label="Camera" className="flex flex-col gap-3 h-full">
-      <div className="rounded-md p-3 w-150 flex-1 min-h-0 bg-secondary-background relative">
-        <Webcam
-          mirrored={settings.mirror}
-          audio={false}
-          ref={cameraRef}
-          screenshotFormat="image/jpeg"
-          className="w-full h-full object-cover"
-          onUserMediaError={() => {
-            console.error("Camera not found");
-            setIsStreaming(false);
-          }}
-          style={{
-            filter: "",
-          }}
-        />
-
-        {flash && (
-          <div className="absolute inset-0 z-50 rounded-md bg-white pointer-events-none" />
-        )}
-
-        {!isStreaming && (
-          <p className="flex items-center justify-center absolute inset-0 text-secondary-background-foreground font-semibold">
-            Waiting for camera...
-          </p>
-        )}
-
-        {isTimerRunning && (
-          <div className="absolute inset-0 flex items-center justify-center ">
-            <p className="w-30 h-30 flex items-center justify-center text-6xl text-white bg-background/20 rounded-full">
-              {timer}
-            </p>
-          </div>
-        )}
-      </div>
+    <section
+      aria-label="Camera"
+      className="flex w-full min-w-0 max-w-2xl flex-col gap-3 xl:w-2xl"
+    >
+      <PixiCam
+        filter={filter}
+        webcamRef={webcamRef}
+        appRef={appRef}
+        spriteRef={spriteRef}
+        flash={flash}
+        countdown={countdown}
+        isTimerRunning={isTimerRunning}
+        isStreaming={isStreaming}
+        setIsStreaming={setIsStreaming}
+      />
 
       {getShotsCount() !== totalShots ? (
-        <div className="flex justify-between h-12">
-          <div className="flex gap-2">
-            <Settings settings={settings} onSettingsChange={onSettingsChange} />
-
-            <TimerSelect onTimerChange={onTimerChange} />
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="h-12 w-full min-w-0 md:flex-1">
+            <FilterOptions onFilterChange={onFilterChange} />
           </div>
-          <Button
-            onClick={onCapture}
-            disabled={!isStreaming}
-            variant="default"
-            className="h-full"
-          >
-            <Camera />
-            Capture
-          </Button>
+
+          <div className="flex h-12 w-full gap-3 md:w-auto md:flex-none">
+            <Settings />
+            <Button
+              onClick={onCapture}
+              disabled={!isStreaming}
+              variant="default"
+              className="h-full flex-1 md:flex-none"
+            >
+              <Camera />
+              Capture
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="flex justify-end gap-2 h-12">
@@ -140,9 +134,7 @@ const CameraSection = () => {
           </Button>
           <Button
             variant="default"
-            onClick={() =>
-              navigate("/studio/customization", { state: "completed" })
-            }
+            onClick={() => navigate("/studio/customization")}
             className="h-full"
           >
             <CircleCheck />

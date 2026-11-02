@@ -40,6 +40,7 @@ export const LayoutA = ({ frameRef }: LayoutProps) => {
           }}
         >
           <img
+            data-type="shot"
             src={shot.src!}
             alt={`Shot-${shot.id}`}
             style={{

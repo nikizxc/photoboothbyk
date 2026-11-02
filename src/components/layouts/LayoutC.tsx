@@ -31,7 +31,11 @@ export const LayoutC = ({ frameRef }: LayoutProps) => {
       >
         {shots.map((shot) => (
           <div key={shot.id} className="w-full h-full overflow-hidden">
-            <img src={shot.src!} className="w-full h-full object-cover" />
+            <img
+              data-type="shot"
+              src={shot.src!}
+              className="w-full h-full object-cover"
+            />
           </div>
         ))}
       </div>

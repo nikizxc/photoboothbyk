@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <Card className="flex flex-col flex-1">
       <CardContent className="flex flex-1">
-        <div className="flex flex-1 items-center justify-center ">
+        <div className="flex-1 items-center justify-center xl:flex hidden">
           <div className="relative h-80 w-80">
             <img
               src="layouts/vintage.png"
@@ -25,12 +25,12 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-col flex-2 items-center justify-center relative">
-          <div className="w-md text-center">
-            <h1 className="text-background font-bright-kenly text-5xl">
+          <div className="lg:w-lg w-full text-center">
+            <h1 className="text-background font-bright-kenly xl:text-6xl md:text-5xl text-3xl">
               capture the moment
             </h1>
 
-            <p className="text-muted-foreground text-xl">
+            <p className="text-muted-foreground xl:text-xl md:text-lg text-sm">
               step into our online photobooth—create, customize, and turn every
               snapshot into a memory worth keeping.
             </p>

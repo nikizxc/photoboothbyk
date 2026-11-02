@@ -7,22 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useSettings } from "@/contexts/SettingsContext";
 
-const TimerSelect = ({
-  onTimerChange,
-}: {
-  onTimerChange: (value: number) => void;
-}) => {
+const TimerSelect = () => {
+  const { timer, onSettingsChange } = useSettings();
   return (
     <Select
       items={TIMER_OPTIONS}
-      defaultValue={3}
+      value={timer}
       onValueChange={(value) => {
-        if (value != null) onTimerChange(Number(value));
+        if (value != null) onSettingsChange("timer", Number(value));
       }}
     >
-      <SelectTrigger className=" h-full!">
-        <SelectValue />
+      <SelectTrigger className="h-full!">
+        <SelectValue className="md:text-base text-sm" />
       </SelectTrigger>
 
       <SelectContent>

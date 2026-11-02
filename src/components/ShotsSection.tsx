@@ -15,19 +15,22 @@ const ShotsSection = () => {
   };
 
   return (
-    <section aria-label="Shots">
-      <Card className="h-125 w-60">
+    <section
+      aria-label="Shots"
+      className="w-full min-w-0 lg:h-125 lg:w-60 lg:shrink-0"
+    >
+      <Card className="w-full h-full">
         <CardContent className="flex h-full flex-col gap-3">
           <p className="shrink-0 text-center font-semibold">
             shots {getShotsCount()}/{selectedLayout?.shots}
           </p>
 
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <ul className="flex flex-col items-center gap-3">
+          <div className="min-h-0 max-h-80 flex-1 overflow-y-auto lg:max-h-none">
+            <ul className="flex lg:flex-col flex-row flex-wrap items-center gap-3">
               {shots.map((shot) => (
                 <li
                   key={shot.id}
-                  className="relative w-40 border-dashed border border-muted-foreground h-30 flex justify-center items-center overflow-hidden"
+                  className="relative md:w-40 w-35 border-dashed border border-muted-foreground h-30 flex justify-center items-center overflow-hidden"
                 >
                   {shot.src ? (
                     <>
@@ -48,7 +51,7 @@ const ShotsSection = () => {
                   ) : (
                     <label className="cursor-pointer">
                       <ImagePlus className="text-muted-foreground m-auto" />
-                      <span className="text-xs text-muted-foreground">
+                      <span className="md:text-xs text-[10px] text-muted-foreground">
                         upload photo
                       </span>
 

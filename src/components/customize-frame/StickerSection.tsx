@@ -22,9 +22,11 @@ const StickerSection = ({
   onStickerRotate,
 }: StickerSectionProps) => {
   return (
-    <section aria-label="Sticker" className="flex flex-col gap-3">
-      <Label className="font-semibold">✨ Sticker (Max of 3)</Label>
-      <div className="flex flex-wrap gap-3">
+    <section aria-label="Sticker" className="flex flex-col gap-6">
+      <Label className="font-semibold md:text-sm text-xs">
+        ✨ Sticker (Max of 3)
+      </Label>
+      <div className="grid md:grid-cols-10 grid-cols-5 gap-3">
         {Object.values(STICKER_OPTIONS).map((value, index) => (
           <Fragment key={index}>
             <Options
@@ -35,56 +37,64 @@ const StickerSection = ({
           </Fragment>
         ))}
       </div>
-      <p className="text-muted-foreground text-xs">ADDED ({stickers.length})</p>
+      <p className="text-muted-foreground md:text-xs text-[10px]">
+        ADDED ({stickers.length})
+      </p>
 
-      {stickers.length === 0 && (
-        <p className="text-muted-foreground text-xs">No added stickers yet.</p>
-      )}
-      {stickers?.map((sticker, index) => (
-        <div key={index} className="flex gap-3 items-center">
-          <img
-            src={sticker.src}
-            className="w-8 h-8 rounded-full ring-1 ring-black/5 shrink-0"
-            alt={`sticker_${index}`}
-          />
-
-          <div className="flex items-center gap-1.5 flex-1">
-            <Maximize2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-            <input
-              type="range"
-              min={30}
-              max={100}
-              value={sticker.size}
-              className="w-full"
-              onChange={(e) =>
-                onStickerChangeSize(index, Number(e.target.value))
-              }
-              aria-label="Sticker size"
+      <div
+        className={`min-h-35 flex flex-col items-center ${stickers.length === 0 ? "justify-center" : "justify-start"}`}
+      >
+        {stickers.length === 0 && (
+          <p className="text-muted-foreground text-xs">
+            No added stickers yet.
+          </p>
+        )}
+        {stickers?.map((sticker, index) => (
+          <div key={index} className="flex gap-3 items-center w-full">
+            <img
+              src={sticker.src}
+              className="w-8 h-8 rounded-full ring-1 ring-black/5 shrink-0"
+              alt={`sticker_${index}`}
             />
-          </div>
 
-          <div className="flex items-center gap-1.5 flex-1">
-            <RotateCw className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-            <input
-              type="range"
-              min={0}
-              max={360}
-              value={sticker.rotation}
-              className="w-full"
-              onChange={(e) => onStickerRotate(index, Number(e.target.value))}
-              aria-label="Sticker rotation"
-            />
-          </div>
+            <div className="flex items-center gap-1.5 flex-1">
+              <Maximize2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+              <input
+                type="range"
+                min={30}
+                max={100}
+                value={sticker.size}
+                className="w-full"
+                onChange={(e) =>
+                  onStickerChangeSize(index, Number(e.target.value))
+                }
+                aria-label="Sticker size"
+              />
+            </div>
 
-          <Button
-            variant="destructive"
-            className="bg-transparent!"
-            onClick={() => onStickerRemove(index)}
-          >
-            <Trash2 />
-          </Button>
-        </div>
-      ))}
+            <div className="flex items-center gap-1.5 flex-1">
+              <RotateCw className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+              <input
+                type="range"
+                min={0}
+                max={360}
+                value={sticker.rotation}
+                className="w-full"
+                onChange={(e) => onStickerRotate(index, Number(e.target.value))}
+                aria-label="Sticker rotation"
+              />
+            </div>
+
+            <Button
+              variant="destructive"
+              className="bg-transparent!"
+              onClick={() => onStickerRemove(index)}
+            >
+              <Trash2 />
+            </Button>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
