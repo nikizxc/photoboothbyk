@@ -7,7 +7,6 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "./ui/carousel";
-import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
 const LayoutOptions = ({
   onChangeTab,
