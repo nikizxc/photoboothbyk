@@ -53,10 +53,12 @@ export default function PixiCam({
       if (cancelled) return;
 
       const sprite = new Sprite(Texture.from(video));
-      sprite.width = 640;
-      sprite.height = 480;
-      sprite.scale.x = isMirrored ? -1 : 1;
-      sprite.x = isMirrored ? 640 : 1;
+      const s = Math.max(640 / video.videoWidth, 480 / video.videoHeight);
+      sprite.anchor.set(0.5);
+      sprite.position.set(320, 240);
+      sprite.scale.set(s);
+
+      sprite.scale.x = Math.abs(sprite.scale.x) * (isMirrored ? -1 : 1);
 
       app.stage.addChild(sprite);
 
@@ -84,10 +86,7 @@ export default function PixiCam({
   useEffect(() => {
     const sprite = spriteRef.current;
     if (!sprite) return;
-    sprite.scale.x = isMirrored
-      ? -Math.abs(sprite.scale.x)
-      : Math.abs(sprite.scale.x);
-    sprite.x = isMirrored ? 640 : 1;
+    sprite.scale.x = Math.abs(sprite.scale.x) * (isMirrored ? -1 : 1);
   }, [isMirrored]);
 
   return (
@@ -102,7 +101,7 @@ export default function PixiCam({
       />
       <div
         ref={hostRef}
-        className="w-full aspect-4/3 [&>canvas]:w-full [&>canvas]:h-full relative"
+        className="w-full aspect-4/3 [&>canvas]:w-full [&>canvas]:h-full  relative"
       >
         {!isStreaming && (
           <p className="flex items-center md:text-sm text-xs justify-center absolute inset-0 ">
