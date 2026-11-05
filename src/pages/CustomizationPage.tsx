@@ -86,9 +86,16 @@ export default function CustomizationPage() {
 
     if (!blob) return;
 
-    const url = URL.createObjectURL(blob);
-
     const randomId = Math.random().toString(36).slice(2, 10);
+    const name = `strip-${randomId}.png`;
+
+    const file = new File([blob], name, { type: "image/png" });
+
+    if (navigator.canShare?.({ files: [file] })) {
+      navigator.share({ files: [file] });
+      return;
+    }
+    const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = url;
