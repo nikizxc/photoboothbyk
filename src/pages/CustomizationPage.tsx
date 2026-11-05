@@ -93,7 +93,9 @@ export default function CustomizationPage() {
     const link = document.createElement("a");
     link.href = url;
     link.download = `strip-${randomId}.png`;
+    document.body.appendChild(link);
     link.click();
+    link.remove();
   };
   return (
     <Card className="flex-1 md:py-10 relative">
