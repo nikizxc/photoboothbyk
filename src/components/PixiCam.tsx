@@ -1,3 +1,4 @@
+import "pixi.js/unsafe-eval";
 import { useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 import { Application, Sprite, Texture } from "pixi.js";
