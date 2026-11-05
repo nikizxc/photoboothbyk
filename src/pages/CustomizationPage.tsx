@@ -1,0 +1,157 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Download } from "lucide-react";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
+
+import LabelSection from "@/components/customize-frame/LabelSection";
+import BackgroundSection from "@/components/customize-frame/BackgroundSection";
+import StickerSection from "@/components/customize-frame/StickerSection";
+import { useNavigate } from "react-router-dom";
+import CaptureGuard from "@/components/CaptureGuard";
+
+export default function CustomizationPage() {
+  const {
+    shots,
+    selectedLayout,
+    customization,
+    onBackgroundChange,
+    onLabelChange,
+    onStickerAdd,
+    onStickerChangeSize,
+    onStickerRotate,
+    onStickerRemove,
+  } = usePhotobooth();
+
+  if (shots.length === 0 && !selectedLayout) {
+    return <CaptureGuard />;
+  }
+
+  const frameRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const Component = selectedLayout?.frame;
+
+  const onDownloadGIF = async () => {
+    if (!frameRef.current) return;
+
+    const imgsEl: NodeListOf<HTMLImageElement> =
+      frameRef.current.querySelectorAll("img[data-type=shot]");
+
+    const gif = new GIF({
+      workers: 2,
+      quality: 10,
+      workerScript: "/gif.worker.js",
+    });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 700;
+    canvas.height = 500;
+
+    const ctx = canvas.getContext("2d");
+
+    imgsEl.forEach((img) => {
+      ctx?.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scale = Math.max(
+        canvas.width / img.naturalWidth,
+        canvas.height / img.naturalHeight,
+      );
+
+      const width = img.naturalWidth * scale;
+      const height = img.naturalHeight * scale;
+
+      const x = (canvas.width - width) / 2;
+      const y = (canvas.height - height) / 2;
+
+      ctx?.drawImage(img, x, y, width, height);
+
+      gif.addFrame(canvas, { delay: 700, copy: true });
+    });
+
+    gif.on("finished", function (blob) {
+      const randomId = Math.random().toString(36).slice(2, 10);
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `strip-${randomId}.gif`;
+      link.click();
+    });
+
+    gif.render();
+  };
+
+  const onDownloadPNG = async () => {
+    if (!frameRef.current) return;
+
+    const canvas = await html2canvas(frameRef.current, {
+      scale: 2,
+      backgroundColor: "#000000",
+    });
+    const dataURL = canvas.toDataURL("image/png");
+
+    const randomId = Math.random().toString(36).slice(2, 10);
+
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = `strip-${randomId}.png`;
+    link.click();
+  };
+  return (
+    <Card className="flex-1 md:py-10 relative">
+      <Button
+        variant="ghost"
+        className="w-fit md:absolute left-5 top-5"
+        onClick={() => navigate("/studio", { state: "start-capturing" })}
+      >
+        <ArrowLeft className="size-5" />
+      </Button>
+      <CardHeader className="flex justify-center">
+        <CardTitle className=" text-center md:text-3xl text-xl font-bright-kenly border border-secondary border-dashed w-fit p-3 rounded-full">
+          Customize your photobooth strip
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex md:flex-row flex-col gap-4 h-full min-h-0">
+          <div className="flex-1 flex justify-center items-start overflow-hidden">
+            {Component && <Component frameRef={frameRef} />}
+          </div>
+
+          <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-2">
+            <BackgroundSection onBackgroundChange={onBackgroundChange} />
+            <LabelSection
+              onLabelChange={onLabelChange}
+              label={customization.label}
+            />
+            <StickerSection
+              addSticker={onStickerAdd}
+              stickers={customization.stickers}
+              onStickerChangeSize={onStickerChangeSize}
+              onStickerRemove={onStickerRemove}
+              onStickerRotate={onStickerRotate}
+            />
+            <div className="flex gap-3 ml-auto mt-auto">
+              <Button
+                variant="default"
+                className="w-25 "
+                onClick={onDownloadGIF}
+              >
+                <Download className="size-4" />
+                GIF
+              </Button>
+              <Button
+                variant="default"
+                className="w-25"
+                onClick={onDownloadPNG}
+              >
+                <Download className="size-4" />
+                PNG
+              </Button>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

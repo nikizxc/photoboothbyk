@@ -2,13 +2,16 @@ import { useState } from "react";
 import LayoutOptions from "../components/LayoutOptions";
 import StartCapturing from "../components/StartCapturing";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
+import { useLocation } from "react-router-dom";
 
 const StudioPage = () => {
-  const [layoutId, setLayoutId] = useState<React.ComponentType<{
-    shots: string[];
-  }> | null>(null);
-  const [totalShots, setTotalShots] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("choose-layout");
+  const returnTo = useLocation().state;
+
+  const [activeTab, setActiveTab] = useState<string>(
+    returnTo ?? "choose-layout",
+  );
+  const { selectedLayout, onPhotoboothReset } = usePhotobooth();
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -17,33 +20,41 @@ const StudioPage = () => {
         onValueChange={setActiveTab}
         className="flex h-full w-full flex-1 flex-col gap-5"
       >
-        <TabsList className="gap-1">
-          <TabsTrigger value="choose-layout">choose a layout</TabsTrigger>
+        <TabsList className="gap-1 md:w-fit w-full">
+          <TabsTrigger
+            value="choose-layout"
+            onClick={onPhotoboothReset}
+            className="md:text-sm text-xs"
+          >
+            choose a layout
+          </TabsTrigger>
 
-          <TabsTrigger disabled={layoutId === null} value="start-capturing">
+          <TabsTrigger
+            disabled={selectedLayout === null}
+            value="start-capturing"
+            className="md:text-sm text-xs"
+          >
             start capturing
           </TabsTrigger>
         </TabsList>
 
         <TabsContent
           value="choose-layout"
-          className="flex flex-col w-full flex-1  justify-center items-center gap-6"
+          className="flex flex-col w-full flex-1 justify-center items-center gap-6"
         >
-          <div className="w-100 text-center">
-            <p className="text-muted-foreground text-lg">
-              select how your memories will be framed from our classic or
-              template layouts
-            </p>
-          </div>
-          <LayoutOptions
-            setLayoutId={setLayoutId}
-            setActiveTab={setActiveTab}
-            setTotalShots={setTotalShots}
-          />
+          <p className="text-muted-foreground md:text-base text-sm text-center">
+            select how your photos will be framed from our classic or template
+            layouts
+          </p>
+
+          <LayoutOptions onChangeTab={(tab) => setActiveTab(tab)} />
         </TabsContent>
 
-        <TabsContent value="start-capturing" className="flex w-full flex-1">
-          <StartCapturing layoutId={layoutId} totalShots={totalShots} />
+        <TabsContent
+          value="start-capturing"
+          className="flex w-full flex-1 flex-col gap-6 items-center"
+        >
+          <StartCapturing />
         </TabsContent>
       </Tabs>
     </div>

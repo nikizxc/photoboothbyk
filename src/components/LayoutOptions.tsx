@@ -9,32 +9,19 @@ import {
 } from "./ui/carousel";
 
 const LayoutOptions = ({
-  setLayoutId,
-  setActiveTab,
-  setTotalShots,
+  onChangeTab,
 }: {
-  setLayoutId: React.Dispatch<
-    React.SetStateAction<null | React.ComponentType<{
-      shots: string[];
-    }>>
-  >;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
-  setTotalShots: React.Dispatch<React.SetStateAction<number | null>>;
+  onChangeTab: (tab: string) => void;
 }) => {
   return (
-    <Carousel className=" h-1/2">
-      <CarouselContent className="w-2xl">
+    <Carousel className="h-1/2 md:w-4xl w-full">
+      <CarouselContent>
         {LAYOUT_OPTIONS.map((layout, index) => (
           <CarouselItem
-            className="basis-1/3 "
+            className="md:basis-1/3 basis-full h-full px-15"
             key={index}
-            onClick={() => {
-              setLayoutId(() => layout.frame);
-              setActiveTab("start-capturing");
-              setTotalShots(layout.shots);
-            }}
           >
-            <LayoutCard layout={layout} />
+            <LayoutCard layout={layout} onChangeTab={onChangeTab} />
           </CarouselItem>
         ))}
       </CarouselContent>

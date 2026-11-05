@@ -1,40 +1,82 @@
-import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ITEMS } from "@/constants/navigation-items.constant";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
-
-const navigationItems = [
-  { label: "home", path: "/" },
-  { label: "how it works", path: "/how-it-works" },
-  { label: "studio", path: "/studio" },
-];
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 const Header = () => {
-  const navigate = useNavigate();
-
-  const currentLocation = window.location.pathname;
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
-    <div className="w-full font-bright-kenly h-fit mb-10">
-      <div className="flex justify-between items-center ">
-        <p
-          onClick={() => navigate("/")}
-          className="text-4xl cursor-pointer drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]"
-        >
-          photoboothbyk
-        </p>
+    <header className="w-full h-fit mb-10 flex justify-between items-center">
+      <Link
+        to="/"
+        className="font-bright-kenly md:text-4xl text-2xl cursor-pointer drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]"
+      >
+        photoboothbyk
+      </Link>
 
-        <div className="flex gap-6">
-          {navigationItems.map(({ label, path }) => (
-            <Button
-              variant="ghost"
-              className={`text-xl ${currentLocation !== path && "text-foreground/70"}`}
-              onClick={() => navigate(path)}
-            >
-              {label}
-            </Button>
+      <nav className="md:block hidden">
+        <ul className="flex gap-6 ">
+          {NAVIGATION_ITEMS.map(({ label, path }) => (
+            <li key={label}>
+              <NavLink
+                to={path}
+                className={({ isActive }) =>
+                  `hover:text-primary-foreground text-base font-semibold ${
+                    isActive
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground"
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            </li>
           ))}
+        </ul>
+      </nav>
+
+      <nav className="md:hidden block">
+        <Button
+          variant="icon"
+          className="p-0!"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <Menu />
+        </Button>
+
+        <div
+          className={`transition-transform duration-300 absolute top-0 left-0 bg-background w-full h-full z-10 p-10 flex flex-col gap-6 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
+          <Button
+            variant="icon"
+            className="p-0! ml-auto"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <X />
+          </Button>
+          <ul className="flex flex-col gap-6 ">
+            {NAVIGATION_ITEMS.map(({ label, path }) => (
+              <li key={label}>
+                <NavLink
+                  to={path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `hover:text-primary-foreground text-base font-semibold ${
+                      isActive
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground"
+                    }`
+                  }
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

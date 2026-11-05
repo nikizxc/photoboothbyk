@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=REM:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -16,6 +16,7 @@ body {
 }
 
 @theme inline {
+  --animate-flash: flash 2000ms ease-out forwards;
   --font-heading: var(--font-sans);
   --font-sans: "Inter Variable", sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
@@ -52,6 +53,10 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-secondary-background: var(--secondary-background);
+  --color-secondary-background-foreground: var(
+    --secondary-background-foreground
+  );
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -63,20 +68,22 @@ body {
 
 :root {
   --background: #722f37;
+  --secondary-background: #f8f4e3;
+  --secondary-background-foreground: #722f37;
   --foreground: #f8f4e3;
   --drop-shadow-button: 0 4px 6px rgb(0 0 0 / 0.2);
   --card: #f8f4e3;
   --card-foreground: #722f37;
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #f8f4e3;
-  --primary-foreground: #722f37;
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --popover: #f8f4e3;
+  --popover-foreground: #722f37;
+  --primary: #1e3a5f;
+  --primary-foreground: #f8f4e3;
+  --secondary: #92505a;
+  --secondary-foreground: #f8f4e3;
   --muted: oklch(0.97 0 0);
-  --muted-foreground: #b8b2a6;
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --muted-foreground: #c9bca8;
+  --accent: #722f37;
+  --accent-foreground: #f8f4e3;
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
@@ -141,4 +148,40 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #666666 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666666;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #808080;
 }
