@@ -46,7 +46,7 @@ const Header = () => {
         </Button>
 
         <div
-          className={`transition-transform duration-300 absolute top-0 left-0 bg-background w-full h-full z-10 p-10 flex flex-col gap-6 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+          className={`transition-[transform, visibility] duration-300 absolute top-0 left-0 bg-background w-full h-full z-10 p-10 flex flex-col gap-6 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full invisible"}`}
         >
           <Button
             variant="icon"
