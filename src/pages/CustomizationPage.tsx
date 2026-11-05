@@ -46,27 +46,18 @@ export default function CustomizationPage() {
     });
 
     const canvas = document.createElement("canvas");
-    canvas.width = 700;
-    canvas.height = 500;
+
+    const first = imgsEl[0];
+    canvas.width = first.naturalWidth;
+    canvas.height = first.naturalHeight;
 
     const ctx = canvas.getContext("2d");
 
+    if (!ctx) return;
+
     imgsEl.forEach((img) => {
-      ctx?.clearRect(0, 0, canvas.width, canvas.height);
-
-      const scale = Math.max(
-        canvas.width / img.naturalWidth,
-        canvas.height / img.naturalHeight,
-      );
-
-      const width = img.naturalWidth * scale;
-      const height = img.naturalHeight * scale;
-
-      const x = (canvas.width - width) / 2;
-      const y = (canvas.height - height) / 2;
-
-      ctx?.drawImage(img, x, y, width, height);
-
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
       gif.addFrame(canvas, { delay: 700, copy: true });
     });
 
@@ -89,12 +80,18 @@ export default function CustomizationPage() {
       scale: 2,
       backgroundColor: "#000000",
     });
-    const dataURL = canvas.toDataURL("image/png");
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/png"),
+    );
+
+    if (!blob) return;
+
+    const url = URL.createObjectURL(blob);
 
     const randomId = Math.random().toString(36).slice(2, 10);
 
     const link = document.createElement("a");
-    link.href = dataURL;
+    link.href = url;
     link.download = `strip-${randomId}.png`;
     link.click();
   };
