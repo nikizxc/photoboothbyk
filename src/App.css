@@ -21,7 +21,7 @@ body {
   --font-sans: "Inter Variable", sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
   --font-bright-kenly: "Bright-Kenly", sans-serif;
-  --drop-shadow-button: var(--drop-shadow-button);
+  --shadow-button: var(--drop-shadow-button);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

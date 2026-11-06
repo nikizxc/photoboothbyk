@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, FileImage, Film } from "lucide-react";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
 import html2canvas from "html2canvas";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import LabelSection from "@/components/customize-frame/LabelSection";
 import BackgroundSection from "@/components/customize-frame/BackgroundSection";
@@ -30,8 +30,30 @@ export default function CustomizationPage() {
 
   const frameRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [blob, setBlob] = useState<Blob | null>(null);
 
   const Component = selectedLayout?.frame;
+
+  useEffect(() => {
+    if (!frameRef.current) return;
+
+    let cancelled = false;
+    (async () => {
+      const canvas = await html2canvas(frameRef.current!, {
+        scale: 1.5,
+        backgroundColor: "#000000",
+      });
+      const b = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/png"),
+      );
+
+      if (!cancelled) setBlob(b);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [customization]);
 
   const onDownloadGIF = async () => {
     if (!frameRef.current) return;
@@ -74,27 +96,9 @@ export default function CustomizationPage() {
   };
 
   const onDownloadPNG = async () => {
-    if (!frameRef.current) return;
-
-    const canvas = await html2canvas(frameRef.current, {
-      scale: 2,
-      backgroundColor: "#000000",
-    });
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/png"),
-    );
-
     if (!blob) return;
 
     const randomId = Math.random().toString(36).slice(2, 10);
-    const name = `strip-${randomId}.png`;
-
-    const file = new File([blob], name, { type: "image/png" });
-
-    if (navigator.canShare?.({ files: [file] })) {
-      navigator.share({ files: [file] });
-      return;
-    }
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
@@ -143,7 +147,7 @@ export default function CustomizationPage() {
                 className="w-25 "
                 onClick={onDownloadGIF}
               >
-                <Download className="size-4" />
+                <Film className="size-4" />
                 GIF
               </Button>
               <Button
@@ -151,7 +155,7 @@ export default function CustomizationPage() {
                 className="w-25"
                 onClick={onDownloadPNG}
               >
-                <Download className="size-4" />
+                <FileImage className="size-4" />
                 PNG
               </Button>
             </div>
