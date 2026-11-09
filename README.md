@@ -1,75 +1,66 @@
-# React + TypeScript + Vite
+# photoboothbyk — A Photobooth Application
+[**Live Demo**](https://photoboothbyk.online)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+photoboothbyk is a client-side photobooth application that lets users capture photos, customize their photobooth strips, and download their creations as PNG or GIF.
 
-Currently, two official plugins are available:
+## Features
+  - **Studio** - Choose a layout, apply filters, and take photos
+  - **Customization** - Customize photobooth strips and download as PNG or GIF
+  - **PWA Support** - Install the application on desktop and mobile devices, with offline support
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
+  - **Language**: TypeScript
+  - **Frontend**: React, Vite, TailwindCSS
+  - **Hosting**: Netlify
 
-## React Compiler
+# Quick Start
+## Prerequisites
+  - Node.js 24+
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installations
+  1. Clone the repository
+```
+git clone https://github.com/nikizxc/photobooth.git
+```
+  2. Install dependencies
+```
+npm install
+```
+  3. Development
+```
+npm run dev
+```
+The application will be available at `http://localhost:5173/`.
 
-## Expanding the ESLint configuration
+  4. Production
+```
+npm run build
+npm run preview
+```
+The application will be available at `http://localhost:4173/`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+# Repository Structure
+```text
+photoboothbyk/
+├── src/
+│   ├── components/          # Custom UI and shadcn/ui components
+│   ├── pages/               # Application pages (Home, PrivacyPolicy, Studio, Customization)
+│   ├── lib/                 # Utility functions and shared configurations
+│   ├── services/            # Application services and logic
+│   ├── types/               # TypeScript type definitions
+│   ├── App.css              # Main application styles
+│   ├── App.tsx              # Main routing setup
+│   └── main.tsx             # React entry point
+├── public/                  # Static assets (backgrounds, stickers)
+├── components.json          # shadcn/ui configuration
+├── eslint.config.ts         # ESLint configuration
+├── tsconfig.json            # Main TypeScript configuration
+├── tsconfig.app.json        # TypeScript configuration for the application
+├── tsconfig.node.json       # TypeScript configuration for Node.js files
+├── vite.config.ts           # Vite configuration
+├── package.json             # Dependencies, scripts, and metadata
+├── package-lock.json        # Locked dependency versions
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
