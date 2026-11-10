@@ -40,6 +40,7 @@ export default function CustomizationPage() {
     if (!frameRef.current) return;
 
     let cancelled = false;
+    setBlob(null);
     (async () => {
       const canvas = await html2canvas(frameRef.current!, {
         scale: 1.5,
@@ -55,7 +56,7 @@ export default function CustomizationPage() {
     return () => {
       cancelled = true;
     };
-  }, [shots, customization]);
+  }, [customization]);
 
   const onDownloadGIF = async () => {
     if (!frameRef.current) return;
@@ -164,6 +165,7 @@ export default function CustomizationPage() {
                   variant="default"
                   className="w-25"
                   onClick={onDownloadPNG}
+                  disabled={!blob}
                 >
                   <FileImage className="size-4" />
                   PNG
