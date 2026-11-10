@@ -55,7 +55,7 @@ export default function CustomizationPage() {
     return () => {
       cancelled = true;
     };
-  }, [customization]);
+  }, [shots, customization]);
 
   const onDownloadGIF = async () => {
     if (!frameRef.current) return;
