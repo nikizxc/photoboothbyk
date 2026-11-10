@@ -1,25 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
+@import "@fontsource/montserrat/latin-400.css";
+@import "@fontsource/montserrat/latin-600.css";
+@import "@fontsource/montserrat/latin-700.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
   font-family: "Bright-Kenly";
   src: url("./assets/fonts/Bright-Kenly.ttf") format("truetype");
-}
-
-body {
-  @apply font-montserrat;
+  font-display: swap;
 }
 
 @theme inline {
   --animate-flash: flash 2000ms ease-out forwards;
   --font-heading: var(--font-sans);
-  --font-sans: "Inter Variable", sans-serif;
-  --font-montserrat: "Montserrat", sans-serif;
+  --font-sans: "Montserrat", sans-serif;
   --font-bright-kenly: "Bright-Kenly", sans-serif;
   --shadow-button: var(--drop-shadow-button);
   --color-sidebar-ring: var(--sidebar-ring);
