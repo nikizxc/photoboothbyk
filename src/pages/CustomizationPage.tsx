@@ -46,9 +46,13 @@ export default function CustomizationPage() {
         scale: 1.5,
         backgroundColor: "#000000",
       });
-      const b = await new Promise<Blob | null>((resolve) =>
+      let b = await new Promise<Blob | null>((resolve) =>
         canvas.toBlob(resolve, "image/png"),
       );
+
+      if (!b) {
+        b = await (await fetch(canvas.toDataURL("image/png"))).blob();
+      }
 
       if (!cancelled) setBlob(b);
     })();
