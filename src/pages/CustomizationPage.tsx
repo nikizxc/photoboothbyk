@@ -2,8 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileImage, Film } from "lucide-react";
 import { usePhotobooth } from "@/contexts/PhotoboothContext";
-import html2canvas from "html2canvas";
-import { useEffect, useRef, useState } from "react";
+
+import { domToPng } from "modern-screenshot";
+import { useRef, useState } from "react";
 
 import LabelSection from "@/components/customize-frame/LabelSection";
 import BackgroundSection from "@/components/customize-frame/BackgroundSection";
@@ -13,54 +14,17 @@ import CaptureGuard from "@/components/CaptureGuard";
 import Loading from "@/components/Loading";
 
 export default function CustomizationPage() {
-  const {
-    shots,
-    selectedLayout,
-    customization,
-    onBackgroundChange,
-    onLabelChange,
-    onStickerAdd,
-    onStickerChangeSize,
-    onStickerRotate,
-    onStickerRemove,
-  } = usePhotobooth();
+  const { shots, selectedLayout, onCustomizationReset } = usePhotobooth();
   const [isLoading, setIsLoading] = useState(false);
+
+  const frameRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const Component = selectedLayout?.frame;
 
   if (shots.length === 0 && !selectedLayout) {
     return <CaptureGuard />;
   }
-
-  const frameRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const [blob, setBlob] = useState<Blob | null>(null);
-
-  const Component = selectedLayout?.frame;
-
-  useEffect(() => {
-    if (!frameRef.current) return;
-
-    let cancelled = false;
-    setBlob(null);
-    (async () => {
-      const canvas = await html2canvas(frameRef.current!, {
-        scale: 1.5,
-        backgroundColor: "#000000",
-      });
-      let b = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png"),
-      );
-
-      if (!b) {
-        b = await (await fetch(canvas.toDataURL("image/png"))).blob();
-      }
-
-      if (!cancelled) setBlob(b);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [customization]);
 
   const onDownloadGIF = async () => {
     if (!frameRef.current) return;
@@ -109,10 +73,12 @@ export default function CustomizationPage() {
   };
 
   const onDownloadPNG = async () => {
-    if (!blob) return;
+    if (!frameRef.current) return;
 
+    const url = await domToPng(frameRef.current, {
+      scale: 1.5,
+    });
     const randomId = Math.random().toString(36).slice(2, 10);
-    const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = url;
@@ -128,7 +94,10 @@ export default function CustomizationPage() {
         <Button
           variant="ghost"
           className="w-fit md:absolute left-5 top-5"
-          onClick={() => navigate("/studio", { state: "start-capturing" })}
+          onClick={() => {
+            onCustomizationReset();
+            navigate("/studio", { state: "start-capturing" });
+          }}
         >
           <ArrowLeft className="size-5" />
         </Button>
@@ -144,18 +113,9 @@ export default function CustomizationPage() {
             </div>
 
             <div className="flex-1 flex flex-col gap-6 overflow-y-auto p-2">
-              <BackgroundSection onBackgroundChange={onBackgroundChange} />
-              <LabelSection
-                onLabelChange={onLabelChange}
-                label={customization.label}
-              />
-              <StickerSection
-                addSticker={onStickerAdd}
-                stickers={customization.stickers}
-                onStickerChangeSize={onStickerChangeSize}
-                onStickerRemove={onStickerRemove}
-                onStickerRotate={onStickerRotate}
-              />
+              <BackgroundSection />
+              <LabelSection />
+              <StickerSection />
               <div className="flex gap-3 ml-auto mt-auto">
                 <Button
                   variant="default"
@@ -169,7 +129,6 @@ export default function CustomizationPage() {
                   variant="default"
                   className="w-25"
                   onClick={onDownloadPNG}
-                  disabled={!blob}
                 >
                   <FileImage className="size-4" />
                   PNG

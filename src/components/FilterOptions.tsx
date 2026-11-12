@@ -21,8 +21,10 @@ const FilterOptions = ({
     if (!api) return;
 
     const onSelect = () => {
-      setSelected(api.selectedScrollSnap());
-      onFilterChange(keys[selected]);
+      const index = api.selectedScrollSnap();
+
+      setSelected(index);
+      onFilterChange(keys[index]);
     };
     onSelect();
 
@@ -30,7 +32,7 @@ const FilterOptions = ({
     return () => {
       api.off("select", onSelect);
     };
-  }, [api]);
+  }, [api, keys, onFilterChange]);
 
   return (
     <div className="h-full md:min-w-0 md:w-80 w-0 min-w-full rounded-md border bg-secondary-background p-1">

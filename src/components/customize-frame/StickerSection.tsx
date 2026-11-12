@@ -2,25 +2,18 @@ import { STICKER_OPTIONS } from "@/constants/sticker-options.constant";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Maximize2, RotateCw, Trash2 } from "lucide-react";
-import type { StickerProp } from "@/types/sticker.type";
 import Options from "./Options";
 import { Fragment } from "react/jsx-runtime";
+import { usePhotobooth } from "@/contexts/PhotoboothContext";
 
-type StickerSectionProps = {
-  addSticker: (src: string) => void;
-  stickers: StickerProp[];
-  onStickerChangeSize: (index: number, size: number) => void;
-  onStickerRemove: (index: number) => void;
-  onStickerRotate: (index: number, rotation: number) => void;
-};
-
-const StickerSection = ({
-  addSticker,
-  stickers,
-  onStickerChangeSize,
-  onStickerRemove,
-  onStickerRotate,
-}: StickerSectionProps) => {
+const StickerSection = () => {
+  const {
+    onStickerAdd,
+    onStickerChangeSize,
+    onStickerRotate,
+    onStickerRemove,
+    customization,
+  } = usePhotobooth();
   return (
     <section aria-label="Sticker" className="flex flex-col gap-6">
       <Label className="font-semibold md:text-sm text-xs">
@@ -31,25 +24,25 @@ const StickerSection = ({
           <Fragment key={index}>
             <Options
               src={`/stickers/${value}`}
-              onClick={() => addSticker(`/stickers/${value}`)}
+              onClick={() => onStickerAdd(`/stickers/${value}`)}
               backgroundSize="100%"
             />
           </Fragment>
         ))}
       </div>
       <p className="text-muted-foreground md:text-xs text-[10px]">
-        ADDED ({stickers.length})
+        ADDED ({customization.stickers.length})
       </p>
 
       <div
-        className={`min-h-35 flex flex-col items-center ${stickers.length === 0 ? "justify-center" : "justify-start"}`}
+        className={`min-h-35 flex flex-col items-center ${customization.stickers.length === 0 ? "justify-center" : "justify-start"}`}
       >
-        {stickers.length === 0 && (
+        {customization.stickers.length === 0 && (
           <p className="text-muted-foreground text-xs">
             No added stickers yet.
           </p>
         )}
-        {stickers?.map((sticker, index) => (
+        {customization.stickers?.map((sticker, index) => (
           <div key={index} className="flex gap-3 items-center w-full">
             <img
               src={sticker.src}

@@ -24,6 +24,7 @@ type PhotoboothContextType = {
   onStickerRotate: (index: number, rotation: number) => void;
   onStickerRemove: (index: number) => void;
   onPhotoboothReset: () => void;
+  onCustomizationReset: () => void;
 };
 
 type Customization = {
@@ -37,8 +38,7 @@ type Customization = {
 };
 
 type LabelProps =
-  | { prop: "isChecked"; value: boolean }
-  | { prop: "color"; value: string };
+  { prop: "isChecked"; value: boolean } | { prop: "color"; value: string };
 
 const PhotoboothContext = createContext<PhotoboothContextType | null>(null);
 
@@ -72,8 +72,10 @@ export function PhotoboothProvider({
   };
 
   const onResetShot = () => {
+    if (!selectedLayout) return;
+
     setShots(
-      Array.from({ length: selectedLayout?.shots! }, (_, index) => {
+      Array.from({ length: selectedLayout.shots }, (_, index) => {
         return {
           id: index,
           src: null,
@@ -155,6 +157,9 @@ export function PhotoboothProvider({
   const onPhotoboothReset = () => {
     setShots([]);
     setSelectedLayout(null);
+  };
+
+  const onCustomizationReset = () => {
     setCustomization({
       selectedColor: "#000000",
       selectedBg: undefined,
@@ -186,6 +191,7 @@ export function PhotoboothProvider({
         onStickerRotate,
         onStickerRemove,
         onPhotoboothReset,
+        onCustomizationReset,
       }}
     >
       {children}

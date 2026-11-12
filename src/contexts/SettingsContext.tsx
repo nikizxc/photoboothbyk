@@ -11,7 +11,6 @@ type SettingsProps = {
   flash: boolean;
   mirror: boolean;
   timer: number;
-  
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -22,8 +21,6 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     mirror: true,
     timer: 3,
   };
-
- 
 
   const onGetSavedSettings = () => {
     try {

@@ -3,10 +3,22 @@ import { Checkbox } from "./ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "./ui/field";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { CogIcon } from "lucide-react";
-import TimerSelect from "./TimerSelect";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { TIMER_OPTIONS } from "@/constants/timer-options.constant";
 
-const Settings = () => {
-  const { isFlashEnabled, isMirrored, onSettingsChange } = useSettings();
+const Settings = ({
+  onTimerChange,
+}: {
+  onTimerChange: (value: number) => void;
+}) => {
+  const { isFlashEnabled, isMirrored, onSettingsChange, timer } = useSettings();
   return (
     <div className="flex gap-2">
       <Popover>
@@ -45,7 +57,31 @@ const Settings = () => {
           </FieldGroup>
         </PopoverContent>
       </Popover>
-      <TimerSelect />
+
+      <Select
+        items={TIMER_OPTIONS}
+        value={timer}
+        onValueChange={(value) => {
+          if (value != null) {
+            onSettingsChange("timer", Number(value));
+            onTimerChange(Number(value));
+          }
+        }}
+      >
+        <SelectTrigger className="h-full!">
+          <SelectValue className="md:text-base text-sm" />
+        </SelectTrigger>
+
+        <SelectContent>
+          <SelectGroup>
+            {TIMER_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   );
 };
