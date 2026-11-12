@@ -1,45 +1,60 @@
 # photoboothbyk — A Photobooth Application
+
 [**Live Demo**](https://photoboothbyk.online)
 
 photoboothbyk is a client-side photobooth application that lets users capture photos, customize their photobooth strips, and download their creations as PNG or GIF.
 
 ## Features
-  - **Studio** - Choose a layout, apply filters, and take photos
-  - **Customization** - Customize photobooth strips and download as PNG or GIF
-  - **PWA Support** - Install the application on desktop and mobile devices, with offline support
+
+- **Studio** - Choose a layout, apply filters, and take photos
+- **Customization** - Customize photobooth strips and download as PNG or GIF
+- **PWA Support** - Install the application on desktop and mobile devices, with offline support
 
 ## Tech Stack
-  - **Language**: TypeScript
-  - **Frontend**: React, Vite, TailwindCSS
-  - **Hosting**: Netlify
+
+- **Language**: TypeScript
+- **Frontend**: React, Vite, TailwindCSS
+- **Hosting**: Netlify
 
 # Quick Start
+
 ## Prerequisites
-  - Node.js 24+
+
+- Node.js 24+
 
 ## Installations
-  1. Clone the repository
+
+1. Clone the repository
+
 ```
 git clone https://github.com/nikizxc/photobooth.git
 ```
-  2. Install dependencies
+
+2. Install dependencies
+
 ```
 npm install
 ```
-  3. Development
+
+3. Development
+
 ```
 npm run dev
 ```
+
 The application will be available at `http://localhost:5173/`.
 
-  4. Production
+4. Production
+
 ```
 npm run build
 npm run preview
 ```
+
 The application will be available at `http://localhost:4173/`
 
 # Repository Structure
+
 ```text
 photoboothbyk/
 ├── src/
@@ -62,5 +77,3 @@ photoboothbyk/
 ├── package-lock.json        # Locked dependency versions
 └── README.md
 ```
-
-

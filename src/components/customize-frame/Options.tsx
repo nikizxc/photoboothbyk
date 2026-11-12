@@ -1,4 +1,6 @@
-const Options = ({ onClick, src, backgroundSize }: any) => {
+import type { OptionsProps } from "@/types/options.type";
+
+const Options = ({ onClick, src, backgroundSize }: OptionsProps) => {
   return (
     <div
       className="w-10 h-10 rounded-full overflow-hidden shadow-lg ring-2 ring-white cursor-pointer hover:scale-110 transition-transform"

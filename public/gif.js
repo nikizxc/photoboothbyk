@@ -181,7 +181,7 @@
               if (this._events.removeListener)
                 this.emit("removeListener", type, listener);
             } else if (isObject(list)) {
-              for (i = length; i-- > 0; ) {
+              for (i = length; i-- > 0;) {
                 if (
                   list[i] === listener ||
                   (list[i].listener && list[i].listener === listener)

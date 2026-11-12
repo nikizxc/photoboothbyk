@@ -6,9 +6,11 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: { allowedHosts: ["gage-green-forge-carefully.trycloudflare.com"] },
   plugins: [
     react(),
     tailwindcss(),
+
     VitePWA({
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,jpg,ttf, woff2}"],

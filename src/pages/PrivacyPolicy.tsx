@@ -20,8 +20,8 @@ const PrivacyPolicy = () => {
           <section key={index} className="space-y-2">
             <h3 className="font-semibold md:text-lg text-sm">{title}</h3>
 
-            {paragraphs.map((paragraph) => (
-              <p>{paragraph}</p>
+            {paragraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
             ))}
           </section>
         ))}

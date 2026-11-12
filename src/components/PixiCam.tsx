@@ -5,6 +5,7 @@ import { Application, Sprite, Texture } from "pixi.js";
 
 import { useSettings } from "@/contexts/SettingsContext";
 import { FILTERS_OPTIONS } from "@/constants/filter-options.constant";
+import type { PixiCamProps } from "@/types/pixi-cam.type";
 
 export default function PixiCam({
   filter,
@@ -16,7 +17,7 @@ export default function PixiCam({
   isTimerRunning,
   isStreaming,
   setIsStreaming,
-}: any) {
+}: PixiCamProps) {
   const hostRef = useRef<HTMLDivElement>(null);
 
   const { isMirrored } = useSettings();
@@ -58,12 +59,9 @@ export default function PixiCam({
       sprite.position.set(320, 240);
       sprite.scale.set(s);
 
-      sprite.scale.x = Math.abs(sprite.scale.x) * (isMirrored ? -1 : 1);
-
       app.stage.addChild(sprite);
 
       spriteRef.current = sprite;
-      sprite.filters = FILTERS_OPTIONS[filter]();
     };
 
     start();
@@ -79,8 +77,10 @@ export default function PixiCam({
   }, []);
 
   useEffect(() => {
-    if (spriteRef.current)
-      spriteRef.current.filters = FILTERS_OPTIONS[filter]();
+    const sprite = spriteRef.current;
+    if (!sprite) return;
+
+    sprite.filters = FILTERS_OPTIONS[filter]();
   }, [filter]);
 
   useEffect(() => {

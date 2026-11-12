@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Camera, CircleCheck } from "lucide-react";
 import Webcam from "react-webcam";
@@ -30,12 +30,6 @@ const CameraSection = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (timer) {
-      setCountdown(timer);
-    }
-  }, [timer]);
-
   const startTimer = async () => {
     setIsTimerRunning(true);
     await Timer.start(timer, (count) => setCountdown(count));
@@ -48,7 +42,7 @@ const CameraSection = () => {
     const sprite = spriteRef.current;
     if (!app || !sprite) return;
 
-    const originalFilters = [...sprite.filters];
+    const originalFilters = [...(sprite.filters ?? [])];
     const bright = new ColorMatrixFilter();
     bright.brightness(1.5, false);
 
@@ -78,6 +72,10 @@ const CameraSection = () => {
     bright.destroy();
   };
 
+  const onTimerChange = (value: number) => {
+    setCountdown(value);
+  };
+
   const onRetake = () => {
     const isConfirmed = confirm(
       `Are you sure you want to retake ${totalShots} shots?`,
@@ -86,9 +84,9 @@ const CameraSection = () => {
     onResetShot();
   };
 
-  const onFilterChange = (key: string) => {
+  const onFilterChange = useCallback((key: string) => {
     setFilter(key);
-  };
+  }, []);
 
   return (
     <section
@@ -114,7 +112,7 @@ const CameraSection = () => {
           </div>
 
           <div className="flex h-12 w-full gap-3 md:w-auto md:flex-none">
-            <Settings />
+            <Settings onTimerChange={onTimerChange} />
             <Button
               onClick={onCapture}
               disabled={!isStreaming}
